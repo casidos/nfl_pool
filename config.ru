@@ -6,7 +6,7 @@ if dev
 end
 
 require 'rack/unreloader'
-Unreloader = Rack::Unreloader.new(:subclasses=>%w'Roda Sequel::Model', :logger=>logger, :reload=>dev){App}
+Unreloader = Rack::Unreloader.new(:subclasses=>%w'Roda Sequel::Model', :logger=>logger, :reload=>dev){NFLPool}
 require_relative 'models'
-Unreloader.require('app.rb'){'App'}
-run(dev ? Unreloader : App.freeze.app)
+Unreloader.require('app.rb'){'NFLPool'}
+run(dev ? Unreloader : NFLPool.freeze.app)

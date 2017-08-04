@@ -8,7 +8,7 @@ require 'rack/test'
 
 require_relative '../minitest_helper'
 
-Capybara.app = App.freeze
+Capybara.app = NFLPool.freeze
 
 class Minitest::Spec
   include Rack::Test::Methods

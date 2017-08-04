@@ -1,4 +1,4 @@
-class App
+class NFLPool
   route 'prefix1' do
   end
 end
