@@ -21,7 +21,7 @@ class NFLPool < Roda
     :secret=>File.read('.session_secret')
 
   plugin :csrf
-  plugin :render, :escape=>:erubi
+  plugin :render, engine: :haml
   plugin :multi_route
 
   Unreloader.require('routes'){}

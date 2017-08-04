@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rack_csrf'
-gem 'tilt', '>= 2'
 gem 'erubi'
+gem 'haml'
+gem 'rack-unreloader'
+gem 'rack_csrf'
 gem 'roda'
 gem 'sequel'
 gem 'sequel_pg'
-gem 'rack-unreloader'
+gem 'tilt', '>= 2'
 
 gem 'capybara'
 gem 'minitest', '>= 5.7.0'
