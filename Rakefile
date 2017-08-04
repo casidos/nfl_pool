@@ -82,7 +82,7 @@ spec = proc do |pattern|
 end
 
 desc "Run all specs"
-task :default => [:model_spec, :web_spec]
+task :test => [:model_spec, :web_spec]
 
 desc "Run model specs"
 task :model_spec do
@@ -93,3 +93,9 @@ desc "Run web specs"
 task :web_spec do
   spec.call('./spec/web/*_spec.rb')
 end
+
+task default: :dev_irb
+task up: :dev_up
+task down: :dev_down
+task bounce: :dev_bounce
+task irb: :dev_irb
