@@ -4,28 +4,45 @@
     %meta{content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
     %meta{charset: 'utf-8'}/
     %meta{content: 'IE=edge', 'http-equiv' => 'X-UA-Compatible'}/
-    %meta{content: 'width=device-width, initial-scale=1', name: 'viewport'}/
 
     %title NFL Pool
 
-    / Bootstrap
-    %link{:href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", :rel => "stylesheet"}/
+    / Tell the browser to be responsive to screen width
+    %meta{content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', name: 'viewport'}/
 
-    / HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
-    / WARNING: Respond.js doesn't work if you view the page via file://
-    /[if lt IE 9]
-      %script{src: 'https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js'}
-      %script{src: 'https://oss.maxcdn.com/respond/1.4.2/respond.min.js'}
+    = assets(:css)
 
-  %body
-    %nav.navbar.navbar-default{role: 'navigation'}
-      .container
-        %a.navbar-brand{href: '/'} NFL Pool
-    #content.container
-      != yield
+  %body.hold-transition.skin-red.sidebar-mini
+    .wrapper
+      %header.main-header
+        %a.logo{href: '/'}
+          %span.logo-mini
+            %b> NFL
+          %span.logo-lg
+            %b> NFL
+            &nbsp;Pool
 
-    / jQuery (necessary for Bootstrap's JavaScript plugins)
-    %script{src: 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'}
+        %nav.navbar.navbar-static-top
+          %a.sidebar-toggle{'data-toggle' => 'offcanvas', href: '#', role: 'button'}
+            %span.sr-only Toggle navigation
+          .navbar-custom-menu
+            %ul.nav.navbar-nav
+              %li.dropdown.user.user-menu
+                %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+                  %span.hidden-xs Dave Nguyen
 
-    / Include all compiled plugins (below), or include individual files as needed
-    %script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'}
+      %aside.main-sidebar
+        %section.sidebar
+          %ul.sidebar-menu
+            %li
+              %a{href: '/'}
+                %i.fa.fa-dashboard
+                %span Dashboard
+
+      .content-wrapper
+        = yield
+
+    = assets(:js)
+
+    :javascript
+      $.widget.bridge('uibutton', $.ui.button);

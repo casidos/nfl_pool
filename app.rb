@@ -20,14 +20,20 @@ class NFLPool < Roda
     #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
     :secret=>File.read('.session_secret')
 
+  plugin :assets,
+    css: %w[bootstrap.min.css font-awesome.min.css adminlte.min.css adminlte-red.min.css nfl_pool.sass],
+    js: %w[jquery.min.js jquery-ui.min.js bootstrap.min.js adminlte.min.js]
   plugin :csrf
   plugin :render, engine: :haml
   plugin :multi_route
-  plugin :static, %w[/images]
+  plugin :static, %w[/fonts /images]
+
+  compile_assets
 
   Unreloader.require('routes'){}
 
   route do |r|
+    r.assets
     r.multi_route
 
     r.root do

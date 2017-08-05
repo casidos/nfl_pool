@@ -1,2 +1,4 @@
 /.env.rb
 /.session_secret
+/public/assets
+/.sass-cache
