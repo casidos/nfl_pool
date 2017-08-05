@@ -23,6 +23,7 @@ class NFLPool < Roda
   plugin :csrf
   plugin :render, engine: :haml
   plugin :multi_route
+  plugin :static, %w[/images]
 
   Unreloader.require('routes'){}
 

@@ -23,6 +23,7 @@ desc "Migrate test database all the way down and then back up"
 task :test_bounce do
   migrate.call('test', 0)
   Sequel::Migrator.apply(DB, 'migrate')
+  Rake::Task['test_seed'].invoke
 end
 
 desc "Migrate development database to latest version"
@@ -39,11 +40,33 @@ desc "Migrate development database all the way down and then back up"
 task :dev_bounce do
   migrate.call('development', 0)
   Sequel::Migrator.apply(DB, 'migrate')
+  Rake::Task['dev_seed'].invoke
 end
 
 desc "Migrate production database to latest version"
 task :prod_up do
   migrate.call('production', nil)
+end
+
+seed = proc do |env|
+  ENV['RACK_ENV'] = env
+  require './seed'
+  load_teams
+end
+
+desc "Seed test database"
+task :test_seed do
+  seed.call 'test'
+end
+
+desc "Seed development database"
+task :dev_seed do
+  seed.call 'development'
+end
+
+desc "Seed production database"
+task :dev_seed do
+  seed.call 'production'
 end
 
 # Shell
