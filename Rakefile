@@ -8,7 +8,7 @@ migrate = lambda do |env, version|
   require 'logger'
   Sequel.extension :migration
   DB.loggers << Logger.new($stdout)
-  Sequel::Migrator.apply(DB, 'migrate', version)
+  Sequel::Migrator.apply(DB, 'db/migrate', version)
 end
 
 desc 'Migrate test database to latest version'
@@ -41,7 +41,7 @@ end
 desc 'Migrate development database all the way down and then back up'
 task :dev_bounce do
   migrate.call('development', 0)
-  Sequel::Migrator.apply(DB, 'migrate')
+  Sequel::Migrator.apply(DB, 'db/migrate')
   Rake::Task['dev_seed'].invoke
 end
 
@@ -52,7 +52,7 @@ end
 
 seed = proc do |env|
   ENV['RACK_ENV'] = env
-  require './seed'
+  require './db/seed'
   load_teams
   load_weeks(
     season: 2017,
