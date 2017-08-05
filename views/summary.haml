@@ -1,0 +1,49 @@
+%section.content-header
+  %h1 Summary
+
+%section.content
+  .row
+    .col-md-10.col-md-offset-1
+      .box
+        .box-header.with-border
+          %h2.box-title Standings
+        .box-body.no-padding
+          %table.table.table-hover.table-striped
+            %thead
+              %tr
+                %th Player
+                %th Correct Picks
+                %th Weeks Tied
+                %th Weeks Won
+                %th Winnings
+            %tbody
+              %tr
+                %td Dave
+                %td
+                %td
+                %td
+                %td
+  .row
+    .col-md-10.col-md-offset-1
+      .box
+        .box-header.with-border
+          %h2.box-title Winnings by Week
+        .box-body.table-responsive.no-padding
+          %table.table.table-hover.table-striped
+            %thead
+              %tr
+                %th Week
+                %th Games
+                %th Betting Tier
+                %th Pot
+                %th Winner
+            %tbody
+              - @weeks.each do |week|
+                %tr
+                  %td
+                    %center
+                      = week.week
+                  %td
+                  %td
+                  %td
+                  %td

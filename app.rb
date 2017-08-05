@@ -37,8 +37,11 @@ class NFLPool < Roda
     r.assets
     r.multi_route
 
+    season = 2017
+
     r.root do
-      view 'index'
+      @weeks = Week.for(season).all
+      view 'summary'
     end
 
     r.on 'picks', method: :get do
@@ -46,7 +49,7 @@ class NFLPool < Roda
       current_week_path = "/picks/#{default_week}"
 
       r.is Integer do |week|
-        @week = Week.first(season: 2017, week: week)
+        @week = Week.first(season: season, week: week)
         @week ? view('picks') : r.redirect(current_week_path)
       end
 
