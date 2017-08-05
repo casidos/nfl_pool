@@ -43,3 +43,21 @@ def load_teams
     db.insert(abbreviation: abb.to_s, name: name)
   end
 end
+
+def load_weeks(season:, betting_starts_at:, betting_ends_at:)
+  db = DB[:weeks]
+  return if db.where(season: season).any?
+
+  week_later = 3600 * 24 * 7
+
+  (1..17).each do |i|
+    db.insert(
+      betting_ends_at: betting_ends_at,
+      betting_starts_at: betting_starts_at,
+      season: season,
+      week: i
+    )
+    betting_ends_at += week_later
+    betting_starts_at += week_later
+  end
+end

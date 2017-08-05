@@ -52,6 +52,11 @@ seed = proc do |env|
   ENV['RACK_ENV'] = env
   require './seed'
   load_teams
+  load_weeks(
+    season: 2017,
+    betting_starts_at: Time.new(2017, 9, 5, 0, 0, 0, '-07:00'),
+    betting_ends_at: Time.new(2017, 9, 7, 16, 30, 0, '-07:00')
+  )
 end
 
 desc "Seed test database"
