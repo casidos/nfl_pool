@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ScoreScraper
   class Game
     attr_reader :away_team, :event, :game_time, :home_team, :id,

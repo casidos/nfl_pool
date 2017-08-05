@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Migrate
 
 migrate = lambda do |env, version|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'score_scraper/browser'
 require_relative 'score_scraper/parser'
 require_relative 'score_scraper/game'

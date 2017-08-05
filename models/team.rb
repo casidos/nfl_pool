@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Team < Sequel::Model
   def abb
     abbreviation

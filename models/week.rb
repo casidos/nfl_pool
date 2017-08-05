@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Week < Sequel::Model
   class << self
     def current

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/score_scraper'
 
 class Game < Sequel::Model

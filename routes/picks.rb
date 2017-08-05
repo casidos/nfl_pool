@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NFLPool
   route 'picks' do |r|
     default_week = Week.current.week
