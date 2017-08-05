@@ -1,0 +1,37 @@
+%section.content-header.content-header-picks
+  %h1.pull-left
+    Picks for Week #{@week.week}
+
+  %ul.pagination.pagination-sm.no-margin.pull-right
+    - Week.for(2017).all.each do |week|
+      :ruby
+        i = week.week
+        same_week = i == @week.week
+        path = same_week ? '#' : "/picks/#{i}"
+        klass = 'active' if same_week
+
+      %li{class: klass}
+        %a{href: path}= i
+
+  %span Week:
+
+%section.content.content-picks
+  - if @week.games.empty?
+    .row
+      .col-md-12
+        No games schedule.
+  - else
+    .row
+      - @week.games.each do |game|
+        .col-md-4
+          .box
+            .box-header
+              %b= game.starts_at.strftime '%A, %b. %-d - %l:%M %P'
+            .box-body.no-padding
+              %table.table
+                - %w[away home].each do |type|
+                  - team = game.send "#{type}_team"
+                  %tr
+                    %td.team-logo
+                      %img{alt: '', class: 'picks-team-logo', src: team.logo_url}/
+                    %td= team.name

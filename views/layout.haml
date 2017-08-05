@@ -34,10 +34,14 @@
       %aside.main-sidebar
         %section.sidebar
           %ul.sidebar-menu
-            %li
+            %li{class: "#{'active' if request.path == '/'}"}
               %a{href: '/'}
                 %i.fa.fa-dashboard
                 %span Dashboard
+            %li{class: "#{'active' if request.path.include? 'picks'}"}
+              %a{href: '/picks'}
+                %i.fa.fa-check-square-o
+                %span Picks
 
       .content-wrapper
         = yield
