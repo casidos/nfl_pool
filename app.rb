@@ -28,38 +28,21 @@ class NFLPool < Roda
   plugin :render, engine: :haml
   plugin :multi_route
   plugin :static, %w[/fonts /images]
+  plugin :shared_vars
 
   compile_assets
 
   Unreloader.require('routes'){}
 
   route do |r|
+    shared[:season] = 2017
+
     r.assets
     r.multi_route
 
-    season = 2017
-
     r.root do
-      @weeks = Week.for(season).all
+      @weeks = Week.for(shared[:season]).all
       view 'summary'
-    end
-
-    r.on 'picks', method: :get do
-      default_week = Week.current.week
-      current_week_path = "/picks/#{default_week}"
-
-      r.is Integer do |week|
-        @week = Week.first(season: season, week: week)
-        @week ? view('picks') : r.redirect(current_week_path)
-      end
-
-      r.is '' do
-        r.redirect current_week_path
-      end
-
-      r.is do
-        r.redirect current_week_path
-      end
     end
   end
 end
