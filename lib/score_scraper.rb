@@ -10,7 +10,7 @@ class ScoreScraper
 
   attr_reader :games, :season, :week, :url
 
-  def initialize(season = 2017, week = 1)
+  def initialize(season: 2017, week: 1)
     @season = season
     @games = []
     new_week(week)

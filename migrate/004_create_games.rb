@@ -16,7 +16,11 @@ Sequel.migration do
       column :home_team_score, :int
       column :over_covered,    :bool
       column :over_under,      'numeric(4, 1)'
+      column :quarter_time,    :text
+      column :remote_id,       :text
       column :spread,          'numeric(3, 1)'
+      column :starts_at,       :timestamptz, index: true, null: false
+      column :status,          :text, index: true, null: false
     end
   end
 end

@@ -1,6 +1,6 @@
 class ScoreScraper
   class Game
-    attr_reader :away_team, :event, :game_date, :game_time, :home_team, :id,
+    attr_reader :away_team, :event, :game_time, :home_team, :id,
       :status
 
     def initialize(event)
@@ -25,8 +25,10 @@ class ScoreScraper
                 end
 
       @id = event.parent['href'].split('/').last
-      @game_time = event.css('.game-time').first.text
-      @game_date = event.ancestors('.event-tile').xpath('preceding-sibling::h2').first.text
+
+      time = event.css('.game-time').first.text
+      date = event.ancestors('.event-tile').xpath('preceding-sibling::h2').first.text
+      @game_time = DateTime.parse "#{date} #{time} #{Time.now.getlocal.zone}"
 
       @home_team = teams.last
       @away_team = teams.first
