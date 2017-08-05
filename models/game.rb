@@ -6,7 +6,7 @@ class Game < Sequel::Model
   class << self
     def generate!(week)
       db.transaction do
-        scraper(week).games.each do |game|
+        ScoreScraper.new(week: week).games.each do |game|
           create(
             away_team: Team.first(name: game.away_team),
             home_team: Team.first(name: game.home_team),
@@ -17,12 +17,6 @@ class Game < Sequel::Model
           )
         end
       end
-    end
-
-    private
-
-    def scraper(week = nil)
-      @_scraper ||= ScoreScraper.new(week: week)
     end
   end
 
