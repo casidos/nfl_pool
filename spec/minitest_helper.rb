@@ -5,11 +5,15 @@ require 'minitest/hooks/default'
 
 class Minitest::HooksSpec
   around(:all) do |&block|
-    DB.transaction(:rollback=>:always){super(&block)}
+    DB.transaction(rollback: :always) do
+      super(&block)
+    end
   end
 
   around do |&block|
-    DB.transaction(:rollback=>:always, :savepoint=>true, :auto_savepoint=>true){super(&block)}
+    DB.transaction(rollback: :always, savepoint: true, auto_savepoint: true) do
+      super(&block)
+    end
   end
 
   if defined?(Capybara)

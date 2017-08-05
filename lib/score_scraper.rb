@@ -8,7 +8,7 @@ class ScoreScraper
   include Browser
   include Parser
 
-  BASE_URL = 'http://www.thescore.com/nfl/events/week/'.freeze
+  BASE_URL = 'http://www.thescore.com/nfl/events/week/'
 
   attr_reader :games, :season, :week, :url
 
