@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'erubi'
 gem 'haml'
+gem 'pry'
 gem 'rack-unreloader'
 gem 'rack_csrf'
 gem 'roda'

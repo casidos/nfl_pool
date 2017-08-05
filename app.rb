@@ -1,6 +1,7 @@
 require_relative 'models'
 
 require 'roda'
+require 'pry'
 
 class NFLPool < Roda
   opts[:unsupported_block_result] = :raise
@@ -38,6 +39,24 @@ class NFLPool < Roda
 
     r.root do
       view 'index'
+    end
+
+    r.on 'picks', method: :get do
+      default_week = Week.current.week
+      current_week_path = "/picks/#{default_week}"
+
+      r.is Integer do |week|
+        @week = Week.first(season: 2017, week: week)
+        @week ? view('picks') : r.redirect(current_week_path)
+      end
+
+      r.is '' do
+        r.redirect current_week_path
+      end
+
+      r.is do
+        r.redirect current_week_path
+      end
     end
   end
 end
