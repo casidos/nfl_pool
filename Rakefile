@@ -24,7 +24,7 @@ end
 desc 'Migrate test database all the way down and then back up'
 task :test_bounce do
   migrate.call('test', 0)
-  Sequel::Migrator.apply(DB, 'migrate')
+  Sequel::Migrator.apply(DB, 'db/migrate')
   Rake::Task['test_seed'].invoke
 end
 
