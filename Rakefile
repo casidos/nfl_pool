@@ -72,7 +72,7 @@ task :dev_seed do
 end
 
 desc 'Seed production database'
-task :dev_seed do
+task :prod_seed do
   seed.call 'production'
 end
 
