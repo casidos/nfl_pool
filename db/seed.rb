@@ -10,6 +10,8 @@ def load_teams
 
   DB.transaction do
     db.insert(id: 0, name: 'Push', abbreviation: 'PUSH')
+    db.insert(id: -1, name: 'Over', abbreviation: 'OVER')
+    db.insert(id: -2, name: 'Under', abbreviation: 'UNDR')
 
     teams = YAML.load_file 'db/seed/teams.yml'
     teams.each do |abb, name|

@@ -23,4 +23,11 @@ class Game < Sequel::Model
   many_to_one :away_team, class: :Team
   many_to_one :home_team, class: :Team
   many_to_one :week
+
+  one_to_one  :spread_odd
+  one_to_one  :total_odd
+
+  def total
+    away_team_score + home_team_score
+  end
 end
