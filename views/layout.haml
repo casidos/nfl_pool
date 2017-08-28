@@ -27,9 +27,21 @@
             %span.sr-only Toggle navigation
           .navbar-custom-menu
             %ul.nav.navbar-nav
-              %li.dropdown.user.user-menu
-                %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
-                  %span.hidden-xs Dave Nguyen
+              %li.dropdown.user.user-menu.notifications-menu
+                - if @current_user
+                  %a.dropdown-toggle{'data-toggle' => 'dropdown', href: '#'}
+                    %img.user-image{src: @current_user.image_url}/
+                    %span.hidden-xs= @current_user.name
+                  %ul.dropdown-menu
+                    %li
+                      %ul.menu
+                        %li
+                          %a{href: 'auth/sign_out'}
+                            %i.fa.fa-sign-out
+                            Sign Out
+                - else
+                  %a{href: '/auth/google_oauth2'}
+                    %span.hidden-xs Sign In
 
       %aside.main-sidebar
         %section.sidebar

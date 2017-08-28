@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'erubi'
 gem 'haml'
+gem 'omniauth-google-oauth2'
 gem 'pry'
 gem 'rack-unreloader'
 gem 'rack_csrf'

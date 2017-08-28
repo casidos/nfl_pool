@@ -8,3 +8,6 @@ require 'sequel'
 # passed to subprocesses.  DATABASE_URL may contain passwords.
 DB = Sequel.connect(ENV.delete('DATABASE_URL'))
 DB.extension :freeze_datasets
+
+Sequel.extension :core_extensions
+Sequel::Model.plugin :uuid
