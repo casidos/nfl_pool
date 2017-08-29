@@ -5,9 +5,11 @@ class Odd < Sequel::Model
 
   many_to_one :favored_team, class: :Team
   many_to_one :game
-  many_to_one :team
+  many_to_one :winning_team, class: :Team
 
   def winner!
-    update(team: send("#{type.downcase.gsub('odd', '')}_winner!") || Team.push)
+    team = send("#{type.downcase.gsub('odd', '')}_winner!") || Team.push
+    update(winning_team: team)
+    team
   end
 end

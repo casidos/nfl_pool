@@ -5,17 +5,17 @@ require_relative 'spec_helper'
 describe TotalOdd do
   it 'Over Wins' do
     o = odd(25)
-    o.winner!.team.must_equal Team.over
+    o.winner!.must_equal Team.over
   end
 
   it 'Away Wins' do
     o = odd(35)
-    o.winner!.team.must_equal Team.under
+    o.winner!.must_equal Team.under
   end
 
   it 'Push' do
     o = odd(30)
-    o.winner!.team.must_equal Team.push
+    o.winner!.must_equal Team.push
   end
 
   private

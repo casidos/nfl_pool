@@ -8,17 +8,17 @@ describe SpreadOdd do
 
     it 'Home Wins' do
       o = odd(game, home, -5)
-      o.winner!.team.must_equal home
+      o.winner!.must_equal home
     end
 
     it 'Away Wins' do
       o = odd(game, home, -15)
-      o.winner!.team.must_equal away
+      o.winner!.must_equal away
     end
 
     it 'Push' do
       o = odd(game, home, -10)
-      o.winner!.team.must_equal push
+      o.winner!.must_equal push
     end
   end
 
@@ -27,17 +27,17 @@ describe SpreadOdd do
 
     it 'Away Wins' do
       o = odd(game, away, -5)
-      o.winner!.team.must_equal away
+      o.winner!.must_equal away
     end
 
     it 'Home Wins' do
       o = odd(game, away, -15)
-      o.winner!.team.must_equal home
+      o.winner!.must_equal home
     end
 
     it 'Push' do
       o = odd(game, away, -10)
-      o.winner!.team.must_equal push
+      o.winner!.must_equal push
     end
   end
 
