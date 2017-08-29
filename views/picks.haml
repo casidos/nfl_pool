@@ -35,3 +35,10 @@
                     %td.team-logo
                       %img{alt: '', class: 'picks-team-logo', src: team.logo_url}/
                     %td= team.name
+                    %td
+                      .pull-right
+                        - if (s = game.spread_odd)
+                          - if s.favored_team_id == team.id
+                            = '%.1f' % s.odd
+                          - else
+                            T: #{'%.1f' % game.total_odd.odd}
