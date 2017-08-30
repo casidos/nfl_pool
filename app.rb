@@ -6,6 +6,9 @@ require 'roda'
 require 'pry'
 require 'omniauth-google-oauth2'
 
+root = Pathname.new(File.expand_path('..', __FILE__)).freeze
+Dir[root.join('lib', '**', '*.rb')].each { |f| require f }
+
 class NFLPool < Roda
   opts[:unsupported_block_result] = :raise
   opts[:unsupported_matcher] = :raise
@@ -24,16 +27,11 @@ class NFLPool < Roda
       #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
       secret: ENV['SESSION_SECRET']
 
-  use OmniAuth::Builder do
-    provider :google_oauth2,
-             ENV['google_client_id'],
-             ENV['google_client_secret']
-  end
-
   plugin :assets,
          css: %w[bootstrap.min.css font-awesome.min.css adminlte.min.css
                  adminlte-red.min.css nfl_pool.sass],
          js: %w[jquery.min.js jquery-ui.min.js bootstrap.min.js adminlte.min.js nfl_pool.js]
+  plugin :authentication
   plugin :csrf
   plugin :render, engine: :haml
   plugin :multi_route
@@ -45,12 +43,14 @@ class NFLPool < Roda
   Unreloader.require('routes') {}
 
   route do |r|
+    r.assets
+    r.is('sign_in') { view 'sign_in' }
+    r.authenticate! unless r.path.include?('auth')
+
     shared[:season] = 2017
-    @current_user = User[session[:user_id]]
     @current_week = Week.current
     @current_week_path = "/picks/#{@current_week.week}"
 
-    r.assets
     r.multi_route
 
     r.root do

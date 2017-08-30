@@ -43,24 +43,25 @@
                   %a{href: '/auth/google_oauth2'}
                     %span.hidden-xs Sign In
 
-      %aside.main-sidebar
-        %section.sidebar
-          %ul.sidebar-menu
-            %li{class: "#{'active' if request.path == '/'}"}
-              %a{href: '/'}
-                %i.fa.fa-table
-                %span Summary
-            - picks = request.path.include? 'picks'
-            - set_picks = request.path.include? 'edit'
-            %li{class: ('active' if picks && !set_picks)}
-              %a{href: '/picks'}
-                %i.fa.fa-check-square-o
-                %span Picks
-            - if @current_week.betting_period?
-              %li{class: ('active' if picks && set_picks)}
-                %a{href: "/picks/#{@current_week.week}/edit"}
-                  %i.fa.fa-pencil
-                  %span Set Picks
+      - if @current_user
+        %aside.main-sidebar
+          %section.sidebar
+            %ul.sidebar-menu
+              %li{class: "#{'active' if request.path == '/'}"}
+                %a{href: '/'}
+                  %i.fa.fa-table
+                  %span Summary
+              - picks = request.path.include? 'picks'
+              - set_picks = request.path.include? 'edit'
+              %li{class: ('active' if picks && !set_picks)}
+                %a{href: '/picks'}
+                  %i.fa.fa-check-square-o
+                  %span Picks
+              - if @current_week.betting_period?
+                %li{class: ('active' if picks && set_picks)}
+                  %a{href: "/picks/#{@current_week.week}/edit"}
+                    %i.fa.fa-pencil
+                    %span Set Picks
 
       .content-wrapper
         = yield
