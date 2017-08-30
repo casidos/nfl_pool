@@ -38,6 +38,7 @@ class NFLPool < Roda
                  adminlte-red.min.css nfl_pool.sass],
          js: %w[jquery.min.js jquery-ui.min.js bootstrap.min.js adminlte.min.js nfl_pool.js]
   plugin :authentication
+  plugin :bettable
   plugin :csrf
   plugin :default_headers, headers_opts
   plugin :flash

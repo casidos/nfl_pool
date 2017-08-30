@@ -1,6 +1,6 @@
 %section.content-header
   %h1.pull-left
-    Set Picks for Week #{@week.week}
+    Set Picks for Week #{@current_week.week}
 
   .pull-right
     %a.btn.btn-block.btn-sm.btn-primary{href: '/picks'}
@@ -10,9 +10,9 @@
 %section.content.content-picks.content-set-picks
   = csrf_tag
   .row
-    - @week.games.each do |game|
+    - @current_week.games.each do |game|
       :ruby
-        picks = @week.picks_for(@current_user)
+        picks = @current_week.picks_for(@current_user)
         s = game.spread_odd
         t = game.total_odd
         teams = %w[over under]

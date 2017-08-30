@@ -59,7 +59,7 @@
                   %span Picks
               - if @current_week.betting_period?
                 %li{class: ('active' if picks && set_picks)}
-                  %a{href: "/picks/#{@current_week.week}/edit"}
+                  %a{href: "/picks/edit"}
                     %i.fa.fa-pencil
                     %span Set Picks
 

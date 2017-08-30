@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     $.ajax({
       method: 'POST',
-      url: '/pick',
+      url: '/picks',
       data: data,
       context: this,
       success: function() {
@@ -28,8 +28,7 @@ $(document).ready(function() {
         }
       },
       error: function(data) {
-        alert('fucked');
-        alert(data);
+        alert('Uh oh, butt fumble. Contact your admin.');
       }
     });
   });
