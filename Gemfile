@@ -2,12 +2,14 @@
 
 source 'https://rubygems.org'
 
+gem 'bundle'
 gem 'erubi'
 gem 'haml'
 gem 'omniauth-google-oauth2'
 gem 'pry'
 gem 'rack-unreloader'
 gem 'rack_csrf'
+gem 'rake'
 gem 'roda'
 gem 'sass'
 gem 'selenium-webdriver'
