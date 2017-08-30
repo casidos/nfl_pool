@@ -5,7 +5,11 @@ class NFLPool
     r.on 'google_oauth2' do
       r.is 'callback' do
         auth_hash = request.env['omniauth.auth']
-        session[:user_id] = User.with_oauth(auth_hash).id
+        begin
+          session[:user_id] = User.with_oauth(auth_hash).id
+        rescue User::UnauthorizedUserError
+          flash[:danger] = 'You are not authorized. Try a different e-mail address.'
+        end
         r.redirect '/'
       end
     end

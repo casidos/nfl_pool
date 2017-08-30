@@ -31,7 +31,6 @@ class NFLPool < Roda
     #cookie_opts[:secure] = !TEST_MODE
   end
 
-  plugin :default_headers, headers_opts
   use Rack::Session::Cookie, cookie_opts
 
   plugin :assets,
@@ -40,10 +39,12 @@ class NFLPool < Roda
          js: %w[jquery.min.js jquery-ui.min.js bootstrap.min.js adminlte.min.js nfl_pool.js]
   plugin :authentication
   plugin :csrf
-  plugin :render, engine: :haml
+  plugin :default_headers, headers_opts
+  plugin :flash
   plugin :multi_route
-  plugin :static, %w[/fonts /images]
+  plugin :render, engine: :haml
   plugin :shared_vars
+  plugin :static, %w[/fonts /images]
 
   compile_assets
 

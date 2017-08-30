@@ -1,28 +1,25 @@
 # frozen_string_literal: true
 
 class User < Sequel::Model
+  class UnauthorizedUserError < StandardError
+  end
+
   class << self
     def with_oauth(auth)
-      user = first(email: auth.info.email) || new_user(auth)
+      user = first(email: auth.info.email)
+      return fail(User::UnauthorizedUserError) unless user
+
+      user.set(
+        profile_image_url: auth.info.image,
+        provider: auth.provider,
+        uid: auth.uid
+      ) unless user.uid
+
       user.oauth_token = auth.credentials.token
       user.oauth_token_expires_at = Time.at(
         auth.credentials.expires_at
       ) if auth.credentials.expires
       user.save
-    end
-
-    private
-
-    # TODO: remove team and let them select their own
-    def new_user(auth)
-      new(
-        email: auth.info.email,
-        name: auth.info.first_name,
-        profile_image_url: auth.info.image,
-        provider: auth.provider,
-        team_id: 26,
-        uid: auth.uid
-      )
     end
   end
 
