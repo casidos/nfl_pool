@@ -24,6 +24,11 @@ class Odd < Sequel::Model
   many_to_one :game
   many_to_one :winning_team, class: :Team
 
+  one_through_one :week,
+    join_table: :games,
+    left_key: :id,
+    left_primary_key: :game_id
+
   def spread?
     false
   end

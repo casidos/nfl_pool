@@ -5,9 +5,21 @@ class NFLPool
     default_week = Week.current.week
     current_week_path = "/picks/#{default_week}"
 
-    r.is Integer do |week|
+    r.on Integer do |week|
       @week = Week.first(season: shared[:season], week: week)
-      @week ? view('picks') : r.redirect(current_week_path)
+
+      r.is 'edit' do
+        if @week && @week.betting_period?
+           view('set_picks')
+        else
+          # TODO: make this look prettier
+          r.redirect(current_week_path)
+        end
+      end
+
+      r.is do
+        @week ? view('picks') : r.redirect(current_week_path)
+      end
     end
 
     r.is '' do

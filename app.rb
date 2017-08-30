@@ -33,7 +33,7 @@ class NFLPool < Roda
   plugin :assets,
          css: %w[bootstrap.min.css font-awesome.min.css adminlte.min.css
                  adminlte-red.min.css nfl_pool.sass],
-         js: %w[jquery.min.js jquery-ui.min.js bootstrap.min.js adminlte.min.js]
+         js: %w[jquery.min.js jquery-ui.min.js bootstrap.min.js adminlte.min.js nfl_pool.js]
   plugin :csrf
   plugin :render, engine: :haml
   plugin :multi_route

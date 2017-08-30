@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class TotalOdd < Odd
+  def pushable?
+    odd == odd.to_i
+  end
+
   def total?
     true
   end

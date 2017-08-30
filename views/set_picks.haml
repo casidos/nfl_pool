@@ -1,0 +1,64 @@
+%section.content-header
+  %h1.pull-left
+    Set Picks for Week #{@week.week}
+
+  .pull-right
+    %a.btn.btn-block.btn-sm.btn-primary{href: '/picks'}
+      %i.fa.fa-chevron-circle-left
+      Back
+
+%section.content.content-picks
+  = csrf_tag
+  .row
+    - @week.games.each do |game|
+      :ruby
+        picks = @week.picks_for(@current_user)
+        s = game.spread_odd
+        t = game.total_odd
+        teams = %w[over under]
+        teams << 'push' if t.pushable?
+        teams.map! { |t| Team.send(t) }
+
+      .col-md-4
+        .box
+          .box-body.no-padding
+            %table.table.table-hover{id: s.id}
+              - %w[away home].each do |type|
+                :ruby
+                  team = game.send "#{type}_team"
+                  d = { csrf_token: csrf_token, odd: s.id, team: team.id, type: 'spread' }
+                  picked = picks[s.id] && picks[s.id] == team
+                  klass = picked ? 'btn-success' : 'btn-default'
+
+                %tr
+                  %td.team-logo
+                    %img{alt: '', class: 'picks-team-logo', src: team.logo_url}/
+                  %td= team.name
+                  %td
+                    .pull-right
+                      - if s.favored_team_id == team.id
+                        = '%.1f' % s.odd
+                      - else
+                        = ('%.1f' % s.odd).gsub('-', '+')
+                  %td
+                    %center
+                      %a.btn.btn-block.btn-sm.select-pick{class: klass, data: d, id: "#{s.id}_#{team.id}"}
+                        - if picked
+                          %i.fa.fa-check
+                        - else
+                          %i.fa.fa-ban
+
+            %table.table.table-hover{id: t.id}
+              %tr
+                %th
+                  T: #{'%.1f' % t.odd}
+
+                - teams.each do |team|
+                  :ruby
+                    d = { csrf_token: csrf_token, odd: t.id, team: team.id, type: 'total' }
+                    picked = picks[t.id] && picks[t.id] == team
+                    klass = picked ? 'btn-success' : 'btn-default'
+
+                  %td
+                    %a.btn.btn-block.btn-xs.select-pick{class: klass, data: d, id: "#{t.id}_#{team.id}"}
+                      = team.name

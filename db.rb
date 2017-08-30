@@ -10,4 +10,6 @@ DB = Sequel.connect(ENV.delete('DATABASE_URL'))
 DB.extension :freeze_datasets
 
 Sequel.extension :core_extensions
+Sequel::Model.plugin :many_through_many
+Sequel::Model.plugin :update_or_create
 Sequel::Model.plugin :uuid

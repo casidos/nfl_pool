@@ -17,5 +17,26 @@ class Week < Sequel::Model
     end
   end
 
+  many_through_many :picks, [
+    [:games, :week_id, :id],
+    [:odds, :game_id, :id]
+  ],
+    right_primary_key: :odd_id
+
   one_to_many :games, order: :starts_at
+
+  def betting_period?
+    Time.now >= betting_starts_at &&
+      !betting_ended?
+  end
+
+  def betting_ended?
+    Time.now > betting_ends_at
+  end
+
+  def picks_for(user)
+    picks_dataset.where(user: user).all.each_with_object({}) do |pick, h|
+      h[pick.odd_id] = pick.team
+    end
+  end
 end

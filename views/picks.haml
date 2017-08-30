@@ -2,6 +2,10 @@
   %h1.pull-left
     Picks for Week #{@week.week}
 
+  - if @week.betting_period?
+    %a.btn.btn-sm.btn-warning.btn-set-picks{href: "/picks/#{@week.week}/edit"}
+      Set Your Picks!
+
   %ul.pagination.pagination-sm.no-margin.pull-right
     - Week.for(2017).all.each do |week|
       :ruby
