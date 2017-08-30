@@ -58,10 +58,10 @@
                     - user_picks = pretty_picks[user.id]
                     %tr
                       %td= user.name
-                      - if user_picks && (p = user_picks[:spread])
-                        - if @week.betting_ended?
+                      - if user_picks && (t = user_picks[:spread])
+                        - if @show_picks
                           %td.spread
-                            %img{src: p.logo_url}
+                            %img{src: t.logo_url}
                         - else
                           %td.text-center
                             %i.fa.fa-question
@@ -69,9 +69,9 @@
                         %td.text-center
                           %i.fa.fa-ban.text-red
                       %td.text-center
-                        - if user_picks && (p = user_picks[:total])
-                          - if @week.betting_ended?
-                            = p.name
+                        - if user_picks && (t = user_picks[:total])
+                          - if @show_picks
+                            %i.fa{class: "fa-#{t.icon_name}"}
                           - else
                             %i.fa.fa-question
                         - else
@@ -87,22 +87,22 @@
           %table.table
             %tr
               %td
-                %i.fa.fa-arrow-circle-up/
+                %i.fa.fa-arrow-circle-up
               %td Over
 
               %td
-                %i.fa.fa-arrow-circle-down/
+                %i.fa.fa-arrow-circle-down
               %td Under
 
               %td
-                %i.fa.fa-arrows-h/
+                %i.fa.fa-arrows-h
               %td Push
 
             %tr
               %td
-                %i.fa.fa-question/
+                %i.fa.fa-question
               %td Pick hidden
 
               %td
-                %i.fa.fa-ban.text-red/
-              %td{colspan: 3} Has not picked/missed pick
+                %i.fa.fa-ban.text-red
+              %td{colspan: 3} Missing pick

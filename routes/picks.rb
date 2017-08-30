@@ -15,6 +15,7 @@ class NFLPool
       end
 
       r.is do
+        @show_picks = @week && @week.betting_ended?
         @week ? view('picks') : r.redirect(@current_week_path)
       end
     end

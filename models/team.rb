@@ -11,6 +11,17 @@ class Team < Sequel::Model
     abbreviation
   end
 
+  def icon_name
+    case name
+    when 'Over'
+      'arrow-circle-up'
+    when 'Under'
+      'arrow-circle-down'
+    when 'Push'
+      'arrows-h'
+    end
+  end
+
   def logo_url
     "/images/team_logos/#{abb}.png"
   end
