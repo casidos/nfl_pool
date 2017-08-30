@@ -12,17 +12,18 @@
             %thead
               %tr
                 %th Player
-                %th Correct Picks
-                %th Weeks Tied
-                %th Weeks Won
-                %th Winnings
+                %th.text-center Correct Picks
+                %th.text-center Weeks Tied
+                %th.text-center Weeks Won
+                %th.text-center Winnings
             %tbody
-              %tr
-                %td Dave
-                %td
-                %td
-                %td
-                %td
+              - User.order(:name).all.each do |user|
+                %tr
+                  %td= user.name
+                  %td.text-center= user.pretty_correct_picks
+                  %td.text-center
+                  %td.text-center
+                  %td.text-right
   .row
     .col-md-10.col-md-offset-1
       .box

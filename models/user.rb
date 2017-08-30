@@ -28,6 +28,17 @@ class User < Sequel::Model
 
   many_to_one :team
 
+  one_to_many :correct_picks, class: :Pick, conditions: { won: true}
+  one_to_many :picks
+
+  def pretty_correct_picks
+    c = correct_picks_dataset.count
+    t =  picks_dataset.exclude(won: nil).count
+    p = c.to_f / t.to_f
+    p = 0 if p.nan?
+    "#{c} (#{'%.1f' % p}%)"
+  end
+
   def image_url
     profile_image_url || team.logo_url
   end
