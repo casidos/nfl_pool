@@ -6,15 +6,24 @@ module Browser
   private
 
   def caps
-    @_caps ||= Selenium::WebDriver::Remote::Capabilities.chrome
+    Selenium::WebDriver::Remote::Capabilities.chrome
   end
 
   def browser
     @_browser ||= Selenium::WebDriver.for(
       :chrome,
       desired_capabilities: caps,
-      switches: %w[--headless --no-sandbox --disable-gpu --screen-size=1200x800]
+      options: options
     )
+  end
+
+  def options
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.binary = ENV['GOOGLE_CHROME_BIN']
+    options.add_argument '--headless'
+    options.add_argument '--no-sandbox'
+    options.add_argument '--disable-gpu'
+    options
   end
 
   def page_source
