@@ -62,6 +62,10 @@
                   %a{href: "/picks/edit"}
                     %i.fa.fa-pencil
                     %span Set Picks
+              %li{class: ('active' if request.path.include? 'rules')}
+                %a{href: '/rules'}
+                  %i.fa.fa-book
+                  %span Rules & Shit
 
       .content-wrapper
         .row

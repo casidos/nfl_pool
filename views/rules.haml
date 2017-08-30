@@ -1,0 +1,176 @@
+%section.content-header
+  %h1.pull-left
+    Rules
+
+%section.content.content-picks
+  .row
+    .col-md-12
+      .box
+        .box-header
+          %h4 Odds and Picks
+        .box-body
+          %ol
+            %li The odds for any given week will be generated on <b>Tuesday 10am PT</b>.
+            %li The "betting period" will begin once the odds have been generated.
+            %li During the betting period, you can make as many changes as you want.
+            %li Although your picks will remain hidden, everyone will know when you've made your picks (this means when time is running out, we can give you shit for not making your picks yet).
+            %li The betting period will end on <b>Thursday 5pm PT</b>.
+            %li Picks will be finalized at the end of the last game of the week.
+            %li The winner of the week is the person with the most correct "spread" picks. See below for exceptions to this.
+
+      .box
+        .box-header
+          %h4 The Pot
+        .box-body
+          %ol
+            %li Each person must pay a buy-in each week.
+            %li The amount of the buy-in depends on the "betting tier".
+            %li There are 4 betting tiers (see table below).
+            %li The first week will begin at betting tier 1. Betting tier 1 has a minimum of $1.
+            %li The additional tiers only come to effect if the previous week ended in a tie.
+            %li A tie is when 2 or more people have the same number of correct "spread" picks for the week.
+            %li If there is a tie in tiers 1-3, no one wins the pot and it is carried over to the next week.
+            %li The buy-in is then increased for the next week. For example, betting tier 2 has a buy-in of $2.
+            %li
+              If there is a tie when the betting tier is 4, then we will determine a winner using the following tiebreakers:
+              %ol
+                %li Most correct spread picks in the week
+                %li Most correct total picks in the week
+                %li Most correct spread picks in the within the betting tier period (basically, the last 4 weeks)
+                %li Most correct total picks in the within the betting tier period (basically, the last 4 weeks)
+                %li Most correct spread picks overall
+                %li Most correct total picks overall
+                %li Battle in the octagon
+            %li Only those who tie in betting tier 4 are eligible for the pot.
+            %li This can get confusing. See the example below.
+
+          .row
+            .col-md-2
+              %table.table.table-striped.table-hover
+                %tr
+                  %th.text-center Betting Tier
+                  %th.text-center Buy-in
+                - (1..4).each do |i|
+                  %tr
+                    %td.text-center= i
+                    %td.text-right $#{i}
+
+          .row
+            .col-md-12
+              %h4 Example
+              Let's assume three players: Dave, Bruce, and Joshua:
+
+              %table.table.table-striped.table-hover
+                %tr
+                  %th.text-center Week
+                  %th.text-center Betting Tier
+                  %th.text-center Pot
+                  %th.text-center Correct Picks ([Spread, Total])
+                  %th.text-center Outcome
+                %tr
+                  %td.text-center 1
+                  %td.text-center 1
+                  %td.text-center
+                    $3
+                    %br/
+                    %i
+                      $3 ($1/person buy-in)
+                  %td.text-center
+                    Dave [2, 5]
+                    %br/
+                    Bruce [1, 0]
+                    %br/
+                    Joshua [1, 3]
+                  %td.text-center
+                    Dave Wins $3
+                    %br/
+                    %i
+                      Dave has most correct spread picks for the week
+                %tr
+                  %td.text-center 2
+                  %td.text-center 1
+                  %td.text-center
+                    $3
+                    %br/
+                    %i
+                      $3 ($1/person buy-in)
+                  %td.text-center
+                    Dave [2, 0]
+                    %br/
+                    Bruce [2, 0]
+                    %br/
+                    Joshua [1, 3]
+                  %td.text-center
+                    Tie, pot carries over
+                    %br/
+                    %i
+                      Dave and Bruce have the same # of spread picks for the week (2/each)
+                %tr
+                  %td.text-center 3
+                  %td.text-center 2
+                  %td.text-center
+                    $9
+                    %br/
+                    %i
+                      $6 ($2/person buy-in)
+                      %br/
+                      + $3 (pot from previous week)
+                  %td.text-center
+                    Dave [2, 0]
+                    %br/
+                    Bruce [3, 1]
+                    %br/
+                    Joshua [3, 3]
+                  %td.text-center
+                    Tie, pot carries over
+                    %br/
+                    %i
+                      Bruce and Joshua have the same # of spread picks for the week (3/each)
+                %tr
+                  %td.text-center 4
+                  %td.text-center 3
+                  %td.text-center
+                    $18
+                    %br/
+                    %i
+                      $9 ($3/person buy-in)
+                      %br/
+                      + $9 (pot from previous week)
+                  %td.text-center
+                    Dave [1, 2]
+                    %br/
+                    Bruce [0, 0]
+                    %br/
+                    Joshua [1, 3]
+                  %td.text-center
+                    Tie, pot carries over
+                    %br/
+                    %i
+                      Dave and Joshua have the same # of spread picks for the week (1/each)
+                %tr
+                  %td.text-center 5
+                  %td.text-center 4
+                  %td.text-center
+                    $30
+                    %br/
+                    %i
+                      $12 ($4/person buy-in)
+                      %br/
+                      + $18 (pot from previous week)
+                  %td.text-center
+                    Dave [1, 0]
+                    %br/
+                    Bruce [1, 0]
+                    %br/
+                    Joshua [0, 5]
+                  %td.text-center
+                    Dave wins $30
+                    %br/
+                    %i
+                      Dave and Bruce have same # of spread picks for the week (1/each)
+                      %br/
+                      Dave and Bruce have same # of total picks for the week (0/each). Joshua's doesn't matter because he's not eligible.
+                      %br/
+                      Dave and Bruce have same # of total picks for the betting tier period (6/each)
+                      %br/
+                      Dave wins on total picks for the betting tier period (2 vs 1)
