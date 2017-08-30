@@ -19,7 +19,7 @@ module Browser
 
   def options
     options = Selenium::WebDriver::Chrome::Options.new
-    options.binary = ENV['GOOGLE_CHROME_BIN']
+    options.binary = ENV['GOOGLE_CHROME_BIN'] if ENV['RACK_ENV'] == 'production'
     options.add_argument '--headless'
     options.add_argument '--no-sandbox'
     options.add_argument '--disable-gpu'
