@@ -47,6 +47,8 @@ class NFLPool < Roda
   route do |r|
     shared[:season] = 2017
     @current_user = User[session[:user_id]]
+    @current_week = Week.current
+    @current_week_path = "/picks/#{@current_week.week}"
 
     r.assets
     r.multi_route
