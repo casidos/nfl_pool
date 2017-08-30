@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '.env.rb'
+require_relative '.env.rb' unless ENV['RACK_ENV'] == 'production'
 
 require 'sequel'
 
