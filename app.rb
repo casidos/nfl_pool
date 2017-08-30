@@ -14,18 +14,25 @@ class NFLPool < Roda
   opts[:unsupported_matcher] = :raise
   opts[:verbatim_string_matcher] = true
 
-  plugin :default_headers,
-         'Content-Type' => 'text/html',
-         'Content-Security-Policy' => "default-src 'self' https://oss.maxcdn.com/ https://maxcdn.bootstrapcdn.com https://ajax.googleapis.com https://lh3.googleusercontent.com",
-         #'Strict-Transport-Security' => 'max-age=16070400;', # Uncomment if only allowing https:// access
-         'X-Frame-Options' => 'deny',
-         'X-Content-Type-Options' => 'nosniff',
-         'X-XSS-Protection' => '1; mode=block'
+  headers_opts = {
+    'Content-Type' => 'text/html',
+    'Content-Security-Policy' => "default-src 'self' https://oss.maxcdn.com/ https://maxcdn.bootstrapcdn.com https://ajax.googleapis.com https://lh3.googleusercontent.com",
+    'X-Frame-Options' => 'deny',
+    'X-Content-Type-Options' => 'nosniff',
+    'X-XSS-Protection' => '1; mode=block'
+  }
+  cookie_opts = {
+    key: 'rack.session',
+    secret: ENV['SESSION_SECRET']
+  }
 
-  use Rack::Session::Cookie,
-      key: 'rack.session',
-      #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
-      secret: ENV['SESSION_SECRET']
+  if ENV['RACK_ENV'] == 'production'
+    headers_opts['Strict-Transport-Security'] = 'max-age=16070400;'
+    #cookie_opts[:secure] = !TEST_MODE
+  end
+
+  plugin :default_headers, headers_opts
+  use Rack::Session::Cookie, cookie_opts
 
   plugin :assets,
          css: %w[bootstrap.min.css font-awesome.min.css adminlte.min.css
@@ -43,6 +50,8 @@ class NFLPool < Roda
   Unreloader.require('routes') {}
 
   route do |r|
+    r.redirect r.url.tr('http', 'https') if ENV['RACK_ENV'] == 'production' && r.scheme == 'http'
+
     r.assets
     r.is('sign_in') { view 'sign_in' }
     r.authenticate! unless r.path.include?('auth')
