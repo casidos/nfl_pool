@@ -42,3 +42,63 @@
                             = '%.1f' % s.odd
                           - else
                             T: #{'%.1f' % game.total_odd.odd}
+            - if @week
+              - pretty_picks = game.pretty_picks
+              .box-footer
+                %table.table.table-hover.table-striped.game-picks
+                  %tr
+                    %th
+                    %th Spread
+                    %th Total
+                  - User.order(:name).all.each do |user|
+                    - user_picks = pretty_picks[user.id]
+                    %tr
+                      %td= user.name
+                      - if user_picks && (p = user_picks[:spread])
+                        - if @week.betting_ended?
+                          %td.spread
+                            %img{src: p.logo_url}
+                        - else
+                          %td.text-center
+                            %i.fa.fa-question
+                      - else
+                        %td.text-center
+                          %i.fa.fa-ban.text-red
+                      %td.text-center
+                        - if user_picks && (p = user_picks[:total])
+                          - if @week.betting_ended?
+                            = p.name
+                          - else
+                            %i.fa.fa-question
+                        - else
+                          %i.fa.fa-ban.text-red
+
+%section.content.content-legend
+  .row
+    .col-md-6.col-md-offset-3
+      .box
+        .box-header.text-center
+          %b Legend
+        .box-body
+          %table.table
+            %tr
+              %td
+                %i.fa.fa-arrow-circle-up/
+              %td Over
+
+              %td
+                %i.fa.fa-arrow-circle-down/
+              %td Under
+
+              %td
+                %i.fa.fa-arrows-h/
+              %td Push
+
+            %tr
+              %td
+                %i.fa.fa-question/
+              %td Pick hidden
+
+              %td
+                %i.fa.fa-ban.text-red/
+              %td{colspan: 3} Has not picked/missed pick

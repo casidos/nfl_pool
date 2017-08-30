@@ -24,6 +24,14 @@ class Odd < Sequel::Model
   many_to_one :game
   many_to_one :winning_team, class: :Team
 
+  def spread?
+    false
+  end
+
+  def total?
+    false
+  end
+
   def winner!
     team = send("#{type.downcase.gsub('odd', '')}_winner!") || Team.push
     update(winning_team: team)

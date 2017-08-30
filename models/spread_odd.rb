@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class SpreadOdd < Odd
+  def spread?
+    true
+  end
+
   private
 
   def favored_score

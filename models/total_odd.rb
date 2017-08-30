@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class TotalOdd < Odd
+  def total?
+    true
+  end
+
   private
 
   def total_winner!
