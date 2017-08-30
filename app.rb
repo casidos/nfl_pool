@@ -22,7 +22,7 @@ class NFLPool < Roda
   use Rack::Session::Cookie,
       key: 'rack.session',
       #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
-      secret: File.read('.session_secret')
+      secret: ENV['SESSION_SECRET']
 
   use OmniAuth::Builder do
     provider :google_oauth2,
