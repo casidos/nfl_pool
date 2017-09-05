@@ -30,24 +30,24 @@
         .box-header.with-border
           %h2.box-title Winnings by Week
         .box-body.table-responsive.no-padding
-          %table.table.table-hover.table-striped
+          %table.table.table-hover.table-striped.text-center
             %thead
               %tr
-                %th.text-center Week
-                %th.text-center Games
-                %th.text-center Betting Tier
-                %th.text-center Pot
+                %th Week
+                %th Games
+                %th Betting Tier
+                %th Pot
                 %th Winner
             %tbody
               - @weeks.each do |week|
                 %tr
-                  %td.text-center
+                  %td
                     = week.week
-                  %td.text-center
+                  %td
                     = week.games_dataset.followed.count
-                  %td.text-center
+                  %td
                     = week.betting_tier
-                  %td.text-center
+                  %td
                     - if week.pot
                       = '$%d' % week.pot
                   %td
