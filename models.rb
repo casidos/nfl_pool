@@ -5,6 +5,7 @@ require_relative 'db'
 Sequel::Model.cache_associations = false if ENV['RACK_ENV'] == 'development'
 
 Sequel::Model.plugin :auto_validations
+Sequel::Model.plugin :boolean_readers
 Sequel::Model.plugin :prepared_statements
 Sequel::Model.plugin :subclasses unless ENV['RACK_ENV'] == 'development'
 

@@ -41,11 +41,17 @@
                     %td= team.name
                     %td
                       .pull-right
-                        - if (s = game.spread_odd)
-                          - if s.favored_team_id == team.id
-                            = '%.1f' % s.odd
+                        - if game.pending?
+                          - if (s = game.spread_odd)
+                            - if s.favored_team_id == team.id
+                              = '%.1f' % s.odd
+                            - else
+                              T: #{'%.1f' % game.total_odd.odd}
+                        - else
+                          - if type == 'away'
+                            = game.away_team_score
                           - else
-                            T: #{'%.1f' % game.total_odd.odd}
+                            = game.home_team_score
             - if @week
               - pretty_picks = game.pretty_picks
               .box-footer
@@ -54,14 +60,22 @@
                     %th
                     %th Spread
                     %th Total
+                  - if game.final?
+                    %tr.odds-winners
+                      %th Winners:
+                      %th.spread
+                        %img{src: game.spread_odd.winning_team.logo_url}
+                      %th.text-center
+                        %i.fa{class: "fa-#{game.total_odd.winning_team.icon_name} pick-won"}
                   - User.order(:name).all.each do |user|
                     - user_picks = pretty_picks[user.id]
                     %tr
                       %td= user.name
-                      - if user_picks && (t = user_picks[:spread])
+                      - if user_picks && (pick = user_picks[:spread])[:team]
                         - if @show_picks
+                          - klass = 'pick-lost' unless pick[:won]
                           %td.spread
-                            %img{src: t.logo_url}
+                            %img{class: klass, src: pick[:team].logo_url}
                         - else
                           %td.text-center
                             %i.fa.fa-question
@@ -69,9 +83,10 @@
                         %td.text-center
                           %i.fa.fa-ban.text-red
                       %td.text-center
-                        - if user_picks && (t = user_picks[:total])
+                        - if user_picks && (pick = user_picks[:total])[:team]
                           - if @show_picks
-                            %i.fa{class: "fa-#{t.icon_name}"}
+                            - klass = "pick-#{pick[:won] ? 'won' : 'lost'}"
+                            %i.fa{class: "fa-#{pick[:team].icon_name} #{klass}"}
                           - else
                             %i.fa.fa-question
                         - else

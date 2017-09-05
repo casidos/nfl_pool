@@ -24,6 +24,8 @@ class Odd < Sequel::Model
   many_to_one :game
   many_to_one :winning_team, class: :Team
 
+  one_to_many :picks
+
   one_through_one :week,
     join_table: :games,
     left_key: :id,
@@ -39,7 +41,11 @@ class Odd < Sequel::Model
 
   def winner!
     team = send("#{type.downcase.gsub('odd', '')}_winner!") || Team.push
-    update(winning_team: team)
+    DB.transaction do
+      update(winning_team: team)
+      picks_dataset.where(team: team).update(won: true)
+      picks_dataset.exclude(team: team).update(won: false)
+    end
     team
   end
 end

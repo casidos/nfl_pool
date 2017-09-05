@@ -20,7 +20,7 @@ class ScoreScraper
     end
 
     def parse_away_score
-      scores.first.text
+      scores.first.text.strip.to_i
     end
 
     def parse_event
@@ -40,7 +40,7 @@ class ScoreScraper
     end
 
     def parse_game_time
-      time = event.css('.game-time').first.text
+      return unless (time = event.css('.game-time').first&.text)
       date = event
              .ancestors('.event-tile')
              .xpath('preceding-sibling::h2')
@@ -50,7 +50,7 @@ class ScoreScraper
     end
 
     def parse_home_score
-      scores.last.text
+      scores.last.text.strip.to_i
     end
 
     def parse_status
@@ -63,20 +63,24 @@ class ScoreScraper
     end
 
     def parse_total_odd
-      odd = parse_away_score.start_with?('T') ?
-        parse_away_score :
-        parse_home_score
+      odd = (o = odds.first.text).start_with?('T') ?
+        o :
+        odds.last.text
       odd.split(':').last.to_f
     end
 
     def parse_spread_odd
-      odd = parse_away_score.start_with?('T') ?
-        [parse_home_score.to_f, home_team] :
-        [parse_away_score.to_f, away_team]
+      odd = (o = odds.first.text).start_with?('T') ?
+        [odds.last.text.to_f, home_team] :
+        [o.to_f, away_team]
+    end
+
+    def odds
+      @_odds ||= event.css('.odd')
     end
 
     def scores
-      @_scores ||= event.css('.odd')
+      @_scores ||= event.css('.score')
     end
 
     def teams
