@@ -6,6 +6,7 @@ class Roda
 
         def require_bettable!
           return if week.betting_period?
+          return if week.odds_dataset.any?
           scope.flash['warning'] = 'Picks are now locked for the current week.'
           scope.request.redirect(week_path)
         end

@@ -23,6 +23,8 @@ class Week < Sequel::Model
   ],
     right_primary_key: :odd_id
 
+  many_to_many :odds, join_table: :games
+
   one_to_many :games, order: :starts_at
 
   def betting_period?
