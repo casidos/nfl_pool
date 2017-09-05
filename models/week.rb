@@ -34,9 +34,22 @@ class Week < Sequel::Model
     Time.now > betting_ends_at
   end
 
+  def last_week
+    Week[id - 1]
+  end
+
   def picks_for(user)
     picks_dataset.where(user: user).all.each_with_object({}) do |pick, h|
       h[pick.odd_id] = pick.team
     end
+  end
+
+  def pot
+    return @_pot if defined?(@_pot)
+    return unless betting_tier
+
+    buy_in = User.dataset.count * betting_tier
+    previous_pot = betting_tier > 1 ? previous_week.pot : 0
+    @_pot = buy_in + previous_pot
   end
 end

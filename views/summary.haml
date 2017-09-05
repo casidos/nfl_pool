@@ -33,10 +33,10 @@
           %table.table.table-hover.table-striped
             %thead
               %tr
-                %th Week
-                %th Games
-                %th Betting Tier
-                %th Pot
+                %th.text-center Week
+                %th.text-center Games
+                %th.text-center Betting Tier
+                %th.text-center Pot
                 %th Winner
             %tbody
               - @weeks.each do |week|
@@ -45,6 +45,9 @@
                     = week.week
                   %td.text-center
                     = week.games_dataset.followed.count
-                  %td
-                  %td
+                  %td.text-center
+                    = week.betting_tier
+                  %td.text-center
+                    - if week.pot
+                      = '$%d' % week.pot
                   %td
