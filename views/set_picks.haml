@@ -10,7 +10,7 @@
 %section.content.content-picks.content-set-picks
   = csrf_tag
   .row
-    - @current_week.games.each do |game|
+    - @current_week.games_dataset.followed.all.each do |game|
       :ruby
         picks = @current_week.picks_for(@current_user)
         s = game.spread_odd
