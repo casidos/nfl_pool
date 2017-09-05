@@ -23,7 +23,7 @@ class Week < Sequel::Model
   ],
     right_primary_key: :odd_id
 
-  many_to_many :odds, join_table: :games
+  many_to_many :odds, join_table: :games, right_key: :id, right_primary_key: :game_id
 
   one_to_many :games, order: :starts_at
 
