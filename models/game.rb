@@ -4,10 +4,18 @@ require './lib/score_scraper'
 
 class Game < Sequel::Model
   class << self
+    def follow!
+      DB.transaction do
+        pending.update(followed: false)
+        pending
+          .where(away_team_id: user_teams)
+          .or(home_team_id: user_teams)
+          .update(followed: true)
+      end
+    end
+
     def generate!(week)
       db.transaction do
-        user_teams = User.all.map(&:team)
-
         ScoreScraper.new(week: week).games.each do |game|
           teams = [
             Team.first(name: game.away_team),
@@ -41,6 +49,12 @@ class Game < Sequel::Model
         g.odds.each { |odd| odd.winner! } if g.final?
       end
     end
+
+    private
+
+    def user_teams
+      @user_teams ||= User.all.map(&:team_id)
+    end
   end
 
   many_to_many :picks,
@@ -60,6 +74,10 @@ class Game < Sequel::Model
   dataset_module do
     def followed
       where(followed: true)
+    end
+
+    def pending
+      where(status: 'pending')
     end
   end
 
