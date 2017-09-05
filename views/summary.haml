@@ -41,10 +41,10 @@
             %tbody
               - @weeks.each do |week|
                 %tr
-                  %td
-                    %center
-                      = week.week
-                  %td
+                  %td.text-center
+                    = week.week
+                  %td.text-center
+                    = week.games_dataset.followed.count
                   %td
                   %td
                   %td

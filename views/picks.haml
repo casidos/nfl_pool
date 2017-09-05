@@ -26,7 +26,7 @@
         No games schedule.
   - else
     .row
-      - @week.games.each do |game|
+      - @week.games_dataset.followed.all.each do |game|
         .col-md-4
           .box
             .box-header

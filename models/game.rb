@@ -6,10 +6,18 @@ class Game < Sequel::Model
   class << self
     def generate!(week)
       db.transaction do
+        user_teams = User.all.map(&:team)
+
         ScoreScraper.new(week: week).games.each do |game|
+          teams = [
+            Team.first(name: game.away_team),
+            Team.first(name: game.home_team),
+          ]
+
           create(
-            away_team: Team.first(name: game.away_team),
-            home_team: Team.first(name: game.home_team),
+            away_team: teams.first,
+            followed: (user_teams & teams).any?,
+            home_team: teams.last,
             remote_id: game.id,
             starts_at: game.game_time,
             status: game.status,
@@ -48,6 +56,12 @@ class Game < Sequel::Model
 
   one_to_one :spread_odd
   one_to_one :total_odd
+
+  dataset_module do
+    def followed
+      where(followed: true)
+    end
+  end
 
   %w[final pending started].each do |s|
     define_method("#{s}?") { status == s }
