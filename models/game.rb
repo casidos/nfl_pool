@@ -8,8 +8,8 @@ class Game < Sequel::Model
       DB.transaction do
         pending.update(followed: false)
         pending
-          .where(away_team_id: user_teams)
-          .or(home_team_id: user_teams)
+          .where(away_team_id: user_teams.map(&:id))
+          .or(home_team_id: user_teams.map(&:id))
           .update(followed: true)
       end
     end
@@ -17,10 +17,7 @@ class Game < Sequel::Model
     def generate!(week)
       db.transaction do
         ScoreScraper.new(week: week).games.each do |game|
-          teams = [
-            Team.first(name: game.away_team),
-            Team.first(name: game.home_team),
-          ]
+          teams = [ Team.first(name: game.away_team), Team.first(name: game.home_team)]
 
           create(
             away_team: teams.first,
@@ -52,8 +49,10 @@ class Game < Sequel::Model
 
     private
 
+    attr_reader :uteams
+
     def user_teams
-      @user_teams ||= User.all.map(&:team_id)
+      uteams ||= User.all.map(&:team)
     end
   end
 
