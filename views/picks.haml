@@ -41,13 +41,14 @@
                     %td= team.name
                     %td
                       .pull-right
-                        - if game.pending?
-                          - if (s = game.spread_odd)
-                            - if s.favored_team_id == team.id
-                              = '%.1f' % s.odd
-                            - else
-                              T: #{'%.1f' % game.total_odd.odd}
-                        - else
+                        - if (s = game.spread_odd)
+                          - if s.favored_team_id == team.id
+                            = '%.1f' % s.odd
+                          - else
+                            T: #{'%.1f' % game.total_odd.odd}
+                    - unless game.pending?
+                      %td
+                        .pull-right
                           - if type == 'away'
                             = game.away_team_score
                           - else
