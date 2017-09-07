@@ -29,12 +29,12 @@ class NFLPool
         # TODO: throw_error unless odd.week.betting_period?
         # TODO: throw_error unless team is part of odd
 
-        Pick.update_or_create(
+        pick = Pick.update_or_create(
           odd_id: odd.id,
           user_id: @current_user.id
         ) { |p| p.team_id = team.id }
 
-        ''
+        pick.team.name
       end
 
       r.redirect @current_week_path
