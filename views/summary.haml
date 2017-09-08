@@ -13,8 +13,7 @@
               %tr
                 %th Player
                 %th.text-center Correct Picks
-                %th.text-center Weeks Tied
-                %th.text-center Weeks Won
+                %th.text-center Weeks Won (tied)
                 %th.text-center Winnings
             %tbody
               - User.order(:name).all.each do |user|
@@ -24,9 +23,8 @@
                     %img{class: 'logo', src: t.logo_url, title: t.name}
                     = user.name
                   %td.text-center= user.pretty_correct_picks
-                  %td.text-center
-                  %td.text-center
-                  %td.text-right
+                  %td.text-center= user.pretty_weeks_won
+                  %td.text-right= '$%d' % user.pretty_winnings
   .row
     .col-md-10.col-md-offset-1
       .box

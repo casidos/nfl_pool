@@ -36,6 +36,8 @@ class User < Sequel::Model
     end
   end
 
+  many_to_many :weeks_won, class: :Week, join_table: :users_weeks, right_key: :week_id
+
   many_to_one :team
 
   one_to_many :correct_picks, class: :Pick, conditions: { won: true}
@@ -47,6 +49,20 @@ class User < Sequel::Model
     p = c.to_f / t.to_f
     p = p.nan? ? 0 : p * 100
     "#{c} (#{'%.1f' % p}%)"
+  end
+
+  def pretty_weeks_won
+    won = weeks_won.select { |w| w.winner? }.count
+    return 0 if won == 0
+
+    tied = weeks_won.count - won
+    return won if tied == 0
+
+    "#{won} (#{tied})"
+  end
+
+  def pretty_winnings
+    weeks_won.each_with_object(0) { |w, sum| sum + w.pot if w.winner? }
   end
 
   def image_url
