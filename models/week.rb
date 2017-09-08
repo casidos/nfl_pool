@@ -34,6 +34,9 @@ class Week < Sequel::Model
     right_primary_key: :odd_id
 
   many_to_many :odds, join_table: :games, right_key: :id, right_primary_key: :game_id
+  many_to_many :winners, class: :User, join_table: :users_weeks, right_key: :user_id
+
+  one_through_one :winner, class: :User, join_table: :users_weeks, right_key: :user_id
 
   one_to_many :games, order: :starts_at
 
@@ -46,8 +49,16 @@ class Week < Sequel::Model
     Time.now > betting_ends_at
   end
 
+  def games_finished?
+    games_dataset.followed.unfinished.empty?
+  end
+
   def last_week
     Week[id - 1]
+  end
+
+  def next_week
+    Week[id + 1]
   end
 
   def picks_for(user)
@@ -63,5 +74,29 @@ class Week < Sequel::Model
     buy_in = User.dataset.count * betting_tier
     previous_pot = betting_tier > 1 ? previous_week.pot : 0
     @_pot = buy_in + previous_pot
+  end
+
+  def winner!
+    Game.update_scores!(id)
+    return unless games_finished?
+
+    counts = picks_dataset
+      .won
+      .select_group(:user_id)
+      .select_append{count(:user_id).as(count)}
+      .all
+      .each_with_object({}) do |c, h|
+        h[c[:count]] ||= []
+        h[c[:count]] << c[:user_id]
+      end
+    counts[counts.keys.max].each { |user_id| add_winner User[user_id] }
+
+    # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
+
+    next_week.update(betting_tier: winner? ? 1 : betting_tier + 1)
+  end
+
+  def winner?
+    winners_dataset.count == 1
   end
 end

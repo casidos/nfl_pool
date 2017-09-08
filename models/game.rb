@@ -95,6 +95,10 @@ class Game < Sequel::Model
     def pending
       where(status: 'pending')
     end
+
+    def unfinished
+      exclude(status: 'final')
+    end
   end
 
   %w[final pending started].each do |s|

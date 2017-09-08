@@ -54,3 +54,12 @@
                     - if week.pot
                       = '$%d' % week.pot
                   %td
+                    - if week.games_finished?
+                      - if week.winner?
+                        = week.winner.name
+                        wins!
+                      - else
+                        Tie
+                        %br/
+                        %i
+                          = week.winners.map(&:name).sort

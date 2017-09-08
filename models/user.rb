@@ -45,7 +45,7 @@ class User < Sequel::Model
     c = correct_picks_dataset.count
     t =  picks_dataset.exclude(won: nil).count
     p = c.to_f / t.to_f
-    p = 0 if p.nan?
+    p = p.nan? ? 0 : p * 100
     "#{c} (#{'%.1f' % p}%)"
   end
 
