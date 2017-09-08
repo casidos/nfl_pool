@@ -1,0 +1,57 @@
+%section.content-header.content-header-picks
+  %h1.pull-left
+    Picks for Week #{@week.week}
+
+  %a.btn.btn-sm.btn-info.btn-set-picks{href: "/picks/#{@week.week}"}
+    Back
+
+  %ul.pagination.pagination-sm.no-margin.pull-right
+    - Week.for(2017).all.each do |week|
+      :ruby
+        i = week.week
+        same_week = i == @week.week
+        path = same_week ? '#' : "/picks/#{i}/quick"
+        klass = 'active' if same_week
+
+      %li{class: klass}
+        %a{href: path}= i
+
+  %span Week:
+
+%section.content.content-picks
+  .row
+    .col-md-12
+      .box
+        .box-body
+          %table.table.table-striped.table-hover.table-picks-quick-view
+            %tr
+              %th Away
+              %th Home
+              %th Odd
+              - @users.each do |user|
+                %th.picks= user.name
+            - @week.games_dataset.followed.all.each do |game|
+              %tr
+                %td
+                  %img{alt: '', class: 'picks-team-logo', src: game.away_team.logo_url}/
+                  %b= game.away_team_score
+                %td
+                  %img{alt: '', class: 'picks-team-logo', src: game.home_team.logo_url}/
+                  %b= game.home_team_score
+                %td
+                  - o = game.spread_odd
+                  %img{alt: '', class: 'picks-team-logo', src: o.favored_team.logo_url}/
+                  %b= '%.1f' % o.odd
+                - @users.each do |user|
+                  - pick = game.pretty_picks[user.id] && game.pretty_picks[user.id][:spread]
+                  - klass = 'odds-winners' if pick && pick[:won]
+                  %td{class: klass}
+                    - if pick
+                      - klass2 = 'pick-lost' if !pick[:won].nil? && !pick[:won]
+                      %img{class: klass2, src: pick[:team].logo_url, title: pick[:team].name}
+            %tr
+              %th{colspan: 3}
+                %b Total Correct Picks
+              - @users.each do |user|
+                - week_won = 'odds-winners' if @leaders.include? user.id
+                %th{class: week_won}= user.picks_dataset.spread.won.count

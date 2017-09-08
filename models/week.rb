@@ -49,6 +49,21 @@ class Week < Sequel::Model
     Time.now > betting_ends_at
   end
 
+  def correct_picks(odd_type = nil)
+    return @_correct_picks if defined?(@_correct_picks)
+    ds = picks_dataset
+    ds = ds.send(odd_type) if odd_type
+    ds = ds
+      .won
+      .select_group(:user_id)
+      .select_append{count(:user_id).as(count)}
+
+    @_correct_picks ||= ds.all.each_with_object({}) do |c, h|
+      h[c[:count]] ||= []
+      h[c[:count]] << c[:user_id]
+    end
+  end
+
   def games_finished?
     games_dataset.followed.unfinished.empty?
   end
@@ -80,16 +95,9 @@ class Week < Sequel::Model
     Game.update_scores!(id)
     return unless games_finished?
 
-    counts = picks_dataset
-      .won
-      .select_group(:user_id)
-      .select_append{count(:user_id).as(count)}
-      .all
-      .each_with_object({}) do |c, h|
-        h[c[:count]] ||= []
-        h[c[:count]] << c[:user_id]
-      end
-    counts[counts.keys.max].each { |user_id| add_winner User[user_id] }
+    correct_picks[correct_picks.keys.max].each do |user_id|
+      add_winner User[user_id]
+    end
 
     # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
 

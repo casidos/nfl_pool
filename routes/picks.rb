@@ -3,9 +3,16 @@
 class NFLPool
   route 'picks' do |r|
     r.on Integer do |week|
+      @week = Week.first(season: shared[:season], week: week)
+      @show_picks = @week && @week.betting_ended?
+
+      r.is 'quick' do
+        @users = User.order(:name).all
+        @leaders = @week.correct_picks(:spread).values.first || []
+        @show_picks ? view('picks_quick_view') : r.redirect(@current_week_path)
+      end
+
       r.is do
-        @week = Week.first(season: shared[:season], week: week)
-        @show_picks = @week && @week.betting_ended?
         @week ? view('picks') : r.redirect(@current_week_path)
       end
     end

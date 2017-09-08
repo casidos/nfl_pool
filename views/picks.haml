@@ -5,6 +5,9 @@
   - if @week.betting_period?
     %a.btn.btn-sm.btn-warning.btn-set-picks{href: "/picks/edit"}
       Set Your Picks!
+  - elsif @show_picks
+    %a.btn.btn-sm.btn-info.btn-set-picks{href: "/picks/#{@week.week}/quick"}
+      Quick View
 
   %ul.pagination.pagination-sm.no-margin.pull-right
     - Week.for(2017).all.each do |week|
