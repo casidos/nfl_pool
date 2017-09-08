@@ -61,6 +61,7 @@ class NFLPool < Roda
     shared[:season] = 2017
     @current_week = Week.current
     @current_week_path = "/picks/#{@current_week.week}"
+    @teams = Team.by_id
 
     r.multi_route
 

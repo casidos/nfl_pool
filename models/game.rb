@@ -108,15 +108,15 @@ class Game < Sequel::Model
   def pretty_picks
     ps = picks_dataset.eager_graph(:odd).order(:odd__type).all
     ps.each_with_object({}) do |pick, h|
-      k = pick.user.id
+      k = pick.user_id
       h[k] ||= {}
       if pick.odd.spread?
         h[k][:spread] = {}
-        h[k][:spread][:team] = pick.team
+        h[k][:spread][:team_id] = pick.team_id
         h[k][:spread][:won] = pick.won?
       else
         h[k][:total] = {}
-        h[k][:total][:team] = pick.team
+        h[k][:total][:team_id] = pick.team_id
         h[k][:total][:won] = pick.won?
       end
     end

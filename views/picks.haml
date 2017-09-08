@@ -75,11 +75,11 @@
                     - user_picks = pretty_picks[user.id]
                     %tr
                       %td= user.name
-                      - if user_picks && (pick = user_picks[:spread]) && pick[:team]
+                      - if user_picks && (pick = user_picks[:spread]) && (team = @teams[pick[:team_id]])
                         - if @show_picks
                           - klass = 'pick-lost' if !pick[:won].nil? && !pick[:won]
                           %td.spread
-                            %img{class: klass, src: pick[:team].logo_url, title: pick[:team].name}
+                            %img{class: klass, src: team.logo_url, title: team.name}
                         - else
                           %td.text-center
                             %i.fa.fa-question
@@ -87,10 +87,10 @@
                         %td.text-center
                           %i.fa.fa-ban
                       %td.text-center
-                        - if user_picks && (pick = user_picks[:total]) && pick[:team]
+                        - if user_picks && (pick = user_picks[:total]) && (team = @teams[pick[:team_id]])
                           - if @show_picks
                             - klass = "pick-#{pick[:won] ? 'won' : 'lost'}" unless pick[:won].nil?
-                            %i.fa{class: "fa-#{pick[:team].icon_name} #{klass}", title: pick[:team].name}
+                            %i.fa{class: "fa-#{team.icon_name} #{klass}", title: team.name}
                           - else
                             %i.fa.fa-question
                         - else

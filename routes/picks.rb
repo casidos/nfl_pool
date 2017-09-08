@@ -9,6 +9,7 @@ class NFLPool
       r.is 'quick' do
         @users = User.order(:name).all
         @leaders = @week.correct_picks(:spread).values.first || []
+
         @show_picks ? view('picks_quick_view') : r.redirect(@current_week_path)
       end
 
