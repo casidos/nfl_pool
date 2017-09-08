@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+# == Schema Info
+#
+# email                   string    indexed      not null
+# id                      uuid      primary_key  not null, uuid_v4
+# name                    string                 not null
+# oauth_token             string
+# oauth_token_expires_at  datetime
+# profile_image_url       string
+# provider                string    indexed
+# team_id                 integer   indexed      not null
+# uid                     string    indexed
+#
+
 class User < Sequel::Model
   class UnauthorizedUserError < StandardError
   end

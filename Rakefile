@@ -9,6 +9,7 @@ migrate = lambda do |env, version|
   Sequel.extension :migration
   DB.loggers << Logger.new($stdout)
   Sequel::Migrator.apply(DB, 'db/migrate', version)
+  Rake::Task['annotate'].invoke
 end
 
 desc 'Migrate test database to latest version'
@@ -122,6 +123,12 @@ end
 desc 'Run web specs'
 task :web_spec do
   spec.call('./spec/web/*_spec.rb')
+end
+
+desc 'Annotate all model files'
+task :annotate do
+  require_relative 'lib/sequel_annotator'
+  puts SequelAnnotator.()
 end
 
 task default: :dev_irb

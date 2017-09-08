@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# == Schema Info
+#
+# betting_ends_at    datetime  indexed      not null
+# betting_starts_at  datetime  indexed      not null
+# betting_tier       integer
+# id                 integer   primary_key  not null, nextval()
+# season             integer   indexed      not null
+# week               integer   indexed      not null
+#
+
 class Week < Sequel::Model
   class << self
     def current

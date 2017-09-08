@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# == Schema Info
+#
+# favored_team_id  integer  indexed
+# game_id          integer  indexed      not null
+# id               integer  primary_key  not null, nextval()
+# odd              decimal  indexed      not null
+# type             string   indexed      not null
+# winning_team_id  integer  indexed
+#
+
 class Odd < Sequel::Model
   class << self
     def generate!(week)

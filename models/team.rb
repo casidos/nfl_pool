@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# == Schema Info
+#
+# abbreviation  string   indexed      not null
+# id            integer  primary_key  not null, nextval()
+# name          string   indexed      not null
+#
+
 class Team < Sequel::Model
   class << self
     %w(push over under).each do |field|

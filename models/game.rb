@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Info
+#
+# away_team_id     integer   indexed      not null
+# away_team_score  integer
+# final            boolean   indexed      not null, false
+# followed         boolean   indexed      not null, false
+# game_winner_id   integer   indexed
+# home_team_id     integer   indexed      not null
+# home_team_score  integer
+# id               integer   primary_key  not null, nextval()
+# quarter_time     string
+# remote_id        string
+# starts_at        datetime  indexed      not null
+# status           string    indexed      not null
+# week_id          integer   indexed      not null
+#
+
 require './lib/score_scraper'
 
 class Game < Sequel::Model

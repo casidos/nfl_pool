@@ -23,6 +23,7 @@ GEM
       temple (>= 0.8.0)
       tilt
     hashie (3.5.6)
+    inflecto (0.0.2)
     jwt (1.5.6)
     method_source (0.8.2)
     mime-types (3.1)
@@ -98,6 +99,7 @@ DEPENDENCIES
   capybara
   erubi
   haml
+  inflecto
   minitest (>= 5.7.0)
   minitest-hooks (>= 1.1.0)
   omniauth-google-oauth2
