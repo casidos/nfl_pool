@@ -76,7 +76,7 @@
                         - if @show_picks
                           - klass = 'pick-lost' if !pick[:won].nil? && !pick[:won]
                           %td.spread
-                            %img{class: klass, src: pick[:team].logo_url}
+                            %img{class: klass, src: pick[:team].logo_url, title: pick[:team].name}
                         - else
                           %td.text-center
                             %i.fa.fa-question
@@ -87,7 +87,7 @@
                         - if user_picks && (pick = user_picks[:total]) && pick[:team]
                           - if @show_picks
                             - klass = "pick-#{pick[:won] ? 'won' : 'lost'}" unless pick[:won].nil?
-                            %i.fa{class: "fa-#{pick[:team].icon_name} #{klass}"}
+                            %i.fa{class: "fa-#{pick[:team].icon_name} #{klass}", title: pick[:team].name}
                           - else
                             %i.fa.fa-question
                         - else
