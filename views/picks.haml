@@ -82,7 +82,7 @@
                             %i.fa.fa-question
                       - else
                         %td.text-center
-                          %i.fa.fa-ban.text-red
+                          %i.fa.fa-ban
                       %td.text-center
                         - if user_picks && (pick = user_picks[:total]) && pick[:team]
                           - if @show_picks
@@ -91,7 +91,7 @@
                           - else
                             %i.fa.fa-question
                         - else
-                          %i.fa.fa-ban.text-red
+                          %i.fa.fa-ban
 
 %section.content.content-legend
   .row
@@ -120,5 +120,5 @@
               %td Pick hidden
 
               %td
-                %i.fa.fa-ban.text-red
+                %i.fa.fa-ban
               %td{colspan: 3} Missing pick

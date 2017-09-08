@@ -25,7 +25,7 @@ $(document).ready(function() {
         $(this).addClass("btn-success");
 
         if (type === 'spread') {
-          $(klass).html('<i class="fa fa-ban"></i>');
+          $(klass).html('<i class="fa fa-ban text-black"></i>');
           $(this).html('<i class="fa fa-check"></i>');
         }
 
