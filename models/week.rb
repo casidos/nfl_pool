@@ -53,14 +53,13 @@ class Week < Sequel::Model
     return @_correct_picks if defined?(@_correct_picks)
     ds = picks_dataset
     ds = ds.send(odd_type) if odd_type
-    ds = ds
-      .won
-      .select_group(:user_id)
-      .select_append{count(:user_id).as(count)}
+    user_ids = ds.won.map(:user_id)
 
-    @_correct_picks ||= ds.all.each_with_object({}) do |c, h|
-      h[c[:count]] ||= []
-      h[c[:count]] << c[:user_id]
+    @_correct_picks ||= user_ids.each_with_object({}) do |uid, h|
+      c = user_ids.count(uid)
+      h[c] ||= []
+      next if h[c].include? uid
+      h[c] << uid
     end
   end
 
@@ -95,7 +94,7 @@ class Week < Sequel::Model
     Game.update_scores!(id)
     return unless games_finished?
 
-    correct_picks[correct_picks.keys.max].each do |user_id|
+    correct_picks(:spread)[correct_picks.keys.max].each do |user_id|
       add_winner User[user_id]
     end
 
