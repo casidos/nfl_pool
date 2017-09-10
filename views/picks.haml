@@ -33,7 +33,13 @@
         .col-md-4
           .box
             .box-header
-              %b= game.starts_at.strftime '%A, %b. %-d - %l:%M %P'
+              %b
+                - if game.pending?
+                  = game.starts_at.strftime '%A, %b. %-d - %l:%M %P'
+                - elsif game.final?
+                  Final
+                - else
+                  = game.quarter_time
             .box-body.no-padding
               %table.table
                 - %w[away home].each do |type|

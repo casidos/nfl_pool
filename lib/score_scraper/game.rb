@@ -3,7 +3,8 @@
 class ScoreScraper
   class Game
     attr_reader :away_score, :away_team, :event, :favored_team, :game_time,
-                :home_score, :home_team, :id, :spread_odd, :status, :total_odd
+                :home_score, :home_team, :id, :spread_odd, :status, :time_left,
+                :total_odd
 
     def initialize(event)
       @event = event
@@ -19,12 +20,21 @@ class ScoreScraper
       remove_instance_variable :@_teams
     end
 
+    def clock
+      @_clock ||= event.css('.clock')
+    end
+
+    def final?
+      clock.first.text.include?('Final')
+    end
+
     def parse_away_score
       scores.first.text.strip.to_i
     end
 
     def parse_event
       @status = parse_status
+      @time_left = parse_time_left
       @id = event.parent['href'].split('/').last
       @game_time = parse_game_time
       @home_team = teams.last
@@ -54,12 +64,15 @@ class ScoreScraper
     end
 
     def parse_status
-      clock = event.css('.clock')
-      if clock.any?
-        clock.first.text.include?('Final') ? 'final' : 'started'
-      else
-        'pending'
-      end
+      return 'pending' unless clock.any?
+      return 'final' if final?
+      'started'
+    end
+
+    def parse_time_left
+      return if clock.empty?
+      return if clock.first.text.include?('Final')
+      clock.first.text.split(' ').reverse.join(' - ')
     end
 
     def parse_total_odd

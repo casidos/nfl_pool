@@ -57,6 +57,7 @@ class Game < Sequel::Model
           away_team_score: game.away_score,
           final: game.status == 'final',
           home_team_score: game.home_score,
+          quarter_time: game.time_left,
           status: game.status
         )
 
