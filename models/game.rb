@@ -49,7 +49,7 @@ class Game < Sequel::Model
       end
     end
 
-    def update_scores!(week)
+    def update_scores!(week = Week.current.id)
       ScoreScraper.new(week: week).games.each do |game|
         raise 'Game not found' unless (g = Game.first(remote_id: game.id))
         next if game.status == 'pending'
