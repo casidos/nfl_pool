@@ -55,4 +55,4 @@
                 %b Total Correct Picks
               - @users.each do |user|
                 - week_won = 'odds-winners' if @leaders.include? user.id
-                %th{class: week_won}= user.picks_dataset.spread.won.count
+                %th{class: week_won}= user.pretty_correct_picks(@week)

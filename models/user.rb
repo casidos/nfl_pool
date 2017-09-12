@@ -43,12 +43,8 @@ class User < Sequel::Model
   one_to_many :correct_picks, class: :Pick, conditions: { won: true}
   one_to_many :picks
 
-  def pretty_correct_picks
-    c = correct_picks_dataset.count
-    t =  picks_dataset.exclude(won: nil).count
-    p = c.to_f / t.to_f
-    p = p.nan? ? 0 : p * 100
-    "#{c} (#{'%.1f' % p}%)"
+  def pretty_correct_picks(week = nil)
+    week ? _pretty_correct_picks_week(week) : _pretty_correct_picks_all
   end
 
   def pretty_weeks_won
@@ -67,5 +63,24 @@ class User < Sequel::Model
 
   def image_url
     profile_image_url || team.logo_url
+  end
+
+  private
+
+  def _pretty_correct_picks_all
+    c = correct_picks_dataset.count
+    t =  picks_dataset.exclude(won: nil).count
+    p = c.to_f / t.to_f
+    p = p.nan? ? 0 : p * 100
+    "#{c} (#{'%.1f' % p}%)"
+  end
+
+  def _pretty_correct_picks_week(week)
+    correct_picks_dataset
+      .eager_graph(:week)
+      .where(week__id: week.id)
+      .spread
+      .qualify
+      .count
   end
 end
