@@ -62,7 +62,7 @@ class User < Sequel::Model
   end
 
   def pretty_winnings
-    weeks_won.each_with_object(0) { |w, sum| sum + w.pot if w.winner? }
+    weeks_won.reduce(0) { |sum, w| w.winner? ? sum += w.pot : sum }
   end
 
   def image_url
