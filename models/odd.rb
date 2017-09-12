@@ -12,7 +12,7 @@
 
 class Odd < Sequel::Model
   class << self
-    def generate!(week)
+    def generate!(week = Week.current.id)
       db.transaction do
         ScoreScraper.new(week: week).games.each do |game|
           raise 'Game not found' unless (g = Game.first(remote_id: game.id))

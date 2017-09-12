@@ -31,7 +31,7 @@ class Game < Sequel::Model
       end
     end
 
-    def generate!(week)
+    def generate!(week = Week.current.id)
       db.transaction do
         ScoreScraper.new(week: week).games.each do |game|
           teams = [ Team.first(name: game.away_team), Team.first(name: game.home_team)]
