@@ -43,8 +43,8 @@ class User < Sequel::Model
   one_to_many :correct_picks, class: :Pick, conditions: { won: true}
   one_to_many :picks
 
-  def pretty_correct_picks(week = nil)
-    week ? _pretty_correct_picks_week(week) : _pretty_correct_picks_all
+  def pretty_correct_picks(week: nil, type: nil)
+    week ? _pretty_correct_picks_week(week, type) : _pretty_correct_picks_all(type)
   end
 
   def pretty_weeks_won
@@ -67,15 +67,21 @@ class User < Sequel::Model
 
   private
 
-  def _pretty_correct_picks_all
-    c = correct_picks_dataset.count
-    t =  picks_dataset.exclude(won: nil).count
+  def _pretty_correct_picks_all(type)
+    ds = correct_picks_dataset
+    ds = ds.send(type) if type
+    c = ds.count
+
+    ds2 = picks_dataset
+    ds2 = ds2.send(type) if type
+    t = ds2.exclude(won: nil).count
+
     p = c.to_f / t.to_f
     p = p.nan? ? 0 : p * 100
     "#{c} (#{'%.1f' % p}%)"
   end
 
-  def _pretty_correct_picks_week(week)
+  def _pretty_correct_picks_week(week, type)
     correct_picks_dataset
       .eager_graph(:week)
       .where(week__id: week.id)

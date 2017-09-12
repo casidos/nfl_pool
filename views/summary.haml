@@ -11,10 +11,14 @@
           %table.table.table-hover.table-striped
             %thead
               %tr
-                %th Player
-                %th.text-center Correct Picks
-                %th.text-center Weeks Won (tied)
-                %th.text-center Winnings
+                %th{rowspan: 2} Player
+                %th.text-center{colspan: 3} Correct Picks
+                %th.text-center{rowspan: 2} Weeks Won (tied)
+                %th.text-center{rowspan: 2} Winnings
+              %tr
+                %th.text-center Spread
+                %th.text-center Over/Under
+                %th.text-center Total
             %tbody
               - User.order(:name).all.each do |user|
                 %tr
@@ -22,6 +26,8 @@
                     - t = user.team
                     %img{class: 'logo', src: t.logo_url, title: t.name}
                     = user.name
+                  %td.text-center= user.pretty_correct_picks(type: :spread)
+                  %td.text-center= user.pretty_correct_picks(type: :total)
                   %td.text-center= user.pretty_correct_picks
                   %td.text-center= user.pretty_weeks_won
                   %td.text-right= '$%d' % user.pretty_winnings
