@@ -14,6 +14,27 @@ function showAlert(type, message) {
 }
 
 $(document).ready(function() {
+  $('#refresh-scores').click(function() {
+    showAlert('info', 'Refreshing scores. Please wait...');
+
+    var data = {};
+    data['_csrf'] = $("input[name='_csrf']").attr('value');
+
+    $.ajax({
+      method: 'POST',
+      url: '/scores',
+      data: data,
+      context: this,
+      success: function() {
+        window.location.reload();
+        showAlert('success', 'Scores refreshed');
+      },
+      error: function() {
+        showAlert('danger', 'Uh oh, butt fumble. Contact your admin.');
+      }
+    });
+  });
+
   $('.select-pick').click(function() {
     var type = $(this).data('type');
 

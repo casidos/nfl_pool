@@ -2,8 +2,14 @@
   %h1.pull-left
     Picks for Week #{@week.week}
 
-  %a.btn.btn-sm.btn-info.btn-set-picks{href: "/picks/#{@week.week}"}
-    Back
+  .header-buttons
+    %a.btn.btn-sm.btn-info{href: "/picks/#{@week.week}"}
+      Back
+
+    - if @week == Week.current
+      = csrf_tag
+      %a#refresh-scores.btn.btn-sm.btn-primary
+        Refresh Scores
 
   %ul.pagination.pagination-sm.no-margin.pull-right
     - Week.for(2017).all.each do |week|
