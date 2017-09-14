@@ -1,5 +1,18 @@
 var timer = null;
 
+function showAlert(type, message) {
+  if (timer) {
+    clearTimeout(timer)
+  }
+  $(".alert-fixed").remove();
+
+  $("body").append('<div class="alert alert-dismissable alert-fixed alert-' + type + '"><button aria-hidden="true" data-dismiss="alert" class="close">×</button>' + message + '</div>');
+
+  timer = setTimeout(function() {
+    $(".alert-fixed").remove();
+  }, 3000);
+}
+
 $(document).ready(function() {
   $('.select-pick').click(function() {
     var type = $(this).data('type');
@@ -29,20 +42,10 @@ $(document).ready(function() {
           $(this).html('<i class="fa fa-check"></i>');
         }
 
-        if (timer) {
-          clearTimeout(timer)
-        }
-        $(".alert-fixed").remove();
-
-        $("body").append('<div class="alert alert-dismissable alert-success alert-fixed"><button aria-hidden="true" data-dismiss="alert" class="close">×</button>Selection saved: ' + response +'</div>');
-
-        timer = setTimeout(function() {
-          $(".alert-fixed").remove();
-        }, 3000);
+        showAlert('success', 'Selection saved: ' + response);
       },
       error: function(response) {
-        $(".alert-fixed").remove();
-        alert('Uh oh, butt fumble. Contact your admin.');
+        showAlert('danger', 'Uh oh, butt fumble. Contact your admin.');
       }
     });
   });
