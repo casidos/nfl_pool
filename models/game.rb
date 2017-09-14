@@ -98,12 +98,16 @@ class Game < Sequel::Model
     end
 
     def unfinished
-      exclude(status: 'final')
+      exclude(status: %w[final postponed])
     end
   end
 
-  %w[final pending started].each do |s|
+  %w[final pending postponed started].each do |s|
     define_method("#{s}?") { status == s }
+  end
+
+  def finished?
+    %w[final postponed].included? status
   end
 
   def pretty_picks

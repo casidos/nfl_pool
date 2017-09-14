@@ -44,6 +44,8 @@
                   = game.starts_at.strftime '%A, %b. %-d - %l:%M %P'
                 - elsif game.final?
                   Final
+                - elsif game.postponed?
+                  Postponed
                 - else
                   = game.quarter_time
             .box-body.no-padding

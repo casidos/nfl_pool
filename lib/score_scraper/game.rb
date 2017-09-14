@@ -66,6 +66,7 @@ class ScoreScraper
     def parse_status
       return 'pending' unless clock.any?
       return 'final' if final?
+      return 'postponed' if postponed?
       'started'
     end
 
@@ -86,6 +87,10 @@ class ScoreScraper
       odd = (o = odds.first.text).start_with?('T') ?
         [odds.last.text.to_f, home_team] :
         [o.to_f, away_team]
+    end
+
+    def postponed?
+      clock.first.text.include?('Postponed')
     end
 
     def odds
