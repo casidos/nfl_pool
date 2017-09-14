@@ -97,6 +97,10 @@ class Game < Sequel::Model
       where(status: 'pending')
     end
 
+    def began
+      where{starts_at < Time.now}
+    end
+
     def unfinished
       exclude(status: %w[final postponed])
     end

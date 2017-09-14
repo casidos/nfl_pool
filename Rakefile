@@ -131,6 +131,19 @@ task :annotate do
   puts SequelAnnotator.()
 end
 
+desc 'Update scores and determine winner!'
+task :week_winner do
+  # Check: Sun, Mon, Thurs
+  t = Time.now
+  next unless [0, 1, 4].include?(t.wday)
+
+  require_relative 'models'
+  week = Week.current
+  next if week.games_dataset.began.unfinished.empty?
+
+  week.winner!
+end
+
 task default: :dev_irb
 task up: :dev_up
 task down: :dev_down
