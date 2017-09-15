@@ -138,6 +138,7 @@ task :week_winner do
   next unless [0, 1, 4].include?(t.wday)
 
   require_relative 'models'
+  require_relative 'lib/score_scraper'
   week = Week.current
   next if week.games_dataset.began.unfinished.empty?
 
