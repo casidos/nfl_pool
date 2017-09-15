@@ -10,11 +10,6 @@
       %a.btn.btn-sm.btn-info{href: "/picks/#{@week.week}/quick"}
         Quick View
 
-      - if @week == Week.current
-        = csrf_tag
-        %a#refresh-scores.btn.btn-sm.btn-primary
-          Refresh Scores
-
   %ul.pagination.pagination-sm.no-margin.pull-right
     - Week.for(2017).all.each do |week|
       :ruby
