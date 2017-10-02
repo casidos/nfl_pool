@@ -49,8 +49,6 @@ class User < Sequel::Model
 
   def pretty_weeks_won
     won = weeks_won.select { |w| w.winner? }.count
-    return 0 if won == 0
-
     tied = weeks_won.count - won
     return won if tied == 0
 
