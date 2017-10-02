@@ -86,7 +86,7 @@ class Week < Sequel::Model
     return unless betting_tier
 
     buy_in = User.dataset.count * betting_tier
-    previous_pot = betting_tier > 1 ? previous_week.pot : 0
+    previous_pot = betting_tier > 1 ? last_week.pot : 0
     @_pot = buy_in + previous_pot
   end
 
