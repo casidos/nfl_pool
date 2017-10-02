@@ -6,6 +6,7 @@
 # betting_starts_at  datetime  indexed      not null
 # betting_tier       integer
 # id                 integer   primary_key  not null, nextval()
+# pot                integer
 # season             integer   indexed      not null
 # week               integer   indexed      not null
 #
@@ -81,29 +82,38 @@ class Week < Sequel::Model
     end
   end
 
-  def pot
-    return @_pot if defined?(@_pot)
-    return unless betting_tier
-
-    buy_in = User.dataset.count * betting_tier
-    previous_pot = betting_tier > 1 ? last_week.pot : 0
-    @_pot = buy_in + previous_pot
+  def prep!
+    set(betting_tier: _betting_tier)
+    update(pot: _pot)
   end
 
   def winner!
     Game.update_scores!(id)
     return unless games_finished?
 
-    correct_picks(:spread)[correct_picks.keys.max].each do |user_id|
-      add_winner User[user_id]
+    DB.transaction do
+      correct_picks(:spread)[correct_picks.keys.max].each do |user_id|
+        add_winner User[user_id]
+      end
+
+      # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
+      next_week.prep!
     end
-
-    # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
-
-    next_week.update(betting_tier: winner? ? 1 : betting_tier + 1)
   end
 
   def winner?
     winners_dataset.count == 1
+  end
+
+  private
+
+  def _betting_tier
+    winner? ? 1 : last_week.betting_tier + 1
+  end
+
+  def _pot
+    buy_in = User.dataset.count * betting_tier
+    previous_pot = betting_tier > 1 ? last_week.pot : 0
+    buy_in + previous_pot
   end
 end
