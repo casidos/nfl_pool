@@ -82,11 +82,6 @@ class Week < Sequel::Model
     end
   end
 
-  def prep!
-    set(betting_tier: _betting_tier)
-    update(pot: _pot)
-  end
-
   def winner!
     Game.update_scores!(id)
     return unless games_finished?
@@ -97,7 +92,7 @@ class Week < Sequel::Model
       end
 
       # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
-      next_week.prep!
+      next_week.update(betting_tier: _betting_tier, pot: _pot)
     end
   end
 
@@ -108,12 +103,12 @@ class Week < Sequel::Model
   private
 
   def _betting_tier
-    winner? ? 1 : last_week.betting_tier + 1
+    winner? ? 1 : betting_tier + 1
   end
 
   def _pot
-    buy_in = User.dataset.count * betting_tier
-    previous_pot = betting_tier > 1 ? last_week.pot : 0
+    buy_in = User.dataset.count * _betting_tier
+    previous_pot = _betting_tier > 1 ? pot : 0
     buy_in + previous_pot
   end
 end
