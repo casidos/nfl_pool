@@ -64,6 +64,10 @@ class Week < Sequel::Model
     end
   end
 
+  def extend_time(hours)
+    update(betting_ends_at: betting_ends_at + (60 * 60 * hours))
+  end
+
   def games_finished?
     games_dataset.followed.unfinished.empty?
   end
