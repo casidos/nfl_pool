@@ -62,6 +62,10 @@
                   %a{href: "/picks/edit"}
                     %i.fa.fa-pencil
                     %span Set Picks
+              %li{class: ('active' if request.path.include? 'debt')}
+                %a{href: '/debt'}
+                  %i.fa.fa-dollar
+                  %span Debt Owed
               %li{class: ('active' if request.path.include? 'rules')}
                 %a{href: '/rules'}
                   %i.fa.fa-book

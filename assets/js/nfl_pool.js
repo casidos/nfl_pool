@@ -70,4 +70,35 @@ $(document).ready(function() {
       }
     });
   });
+
+  $('.debt-owed').click(function() {
+    $.ajax({
+      method: 'POST',
+      url: '/debt',
+      data: {
+        id: $(this).attr("id"),
+        '_csrf': $("input[name='_csrf']").attr('value')
+      },
+      context: this,
+      success: function(response) {
+        if (response == 'bad_user') {
+            showAlert('danger', "You cannot edit another payee's debt");
+        } else {
+          $(this).removeClass('btn-danger');
+          $(this).removeClass('btn-success');
+
+          if (response == 'true') {
+            $(this).addClass('btn-success');
+            showAlert('success', 'Marked as paid');
+          } else {
+            $(this).addClass('btn-danger');
+            showAlert('success', 'Marked as unpaid');
+          }
+        }
+      },
+      error: function(response) {
+        showAlert('danger', 'Uh oh, butt fumble. Contact your admin.');
+      }
+    });
+  });
 });

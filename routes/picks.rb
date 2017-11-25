@@ -7,8 +7,6 @@ class NFLPool
       @show_picks = @week && @week.betting_ended?
 
       r.is 'quick' do
-        @users = User.order(:name).all
-
         picks = @week.correct_picks(:spread)
         max = picks.keys.max
         @leaders = picks[max] || []

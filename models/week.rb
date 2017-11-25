@@ -39,6 +39,7 @@ class Week < Sequel::Model
 
   one_through_one :winner, class: :User, join_table: :users_weeks, right_key: :user_id
 
+  one_to_many :debts
   one_to_many :games, order: :starts_at
 
   def betting_period?
@@ -95,6 +96,8 @@ class Week < Sequel::Model
         add_winner User[user_id]
       end
 
+      debt!
+
       # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
       next_week.update(betting_tier: _betting_tier, pot: _pot)
     end
@@ -114,5 +117,20 @@ class Week < Sequel::Model
     buy_in = User.dataset.count * _betting_tier
     previous_pot = _betting_tier > 1 ? pot : 0
     buy_in + previous_pot
+  end
+
+  def debt!
+    return unless winner?
+    payee_id = winner.id
+
+    User.map(:id).each do |loser_id|
+      Debt.create(
+        amount: pot / 9,
+        loser_id: loser_id,
+        paid: loser_id == payee_id,
+        payee_id: payee_id,
+        week: self
+      )
+    end
   end
 end

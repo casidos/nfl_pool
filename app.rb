@@ -62,11 +62,12 @@ class NFLPool < Roda
     @current_week = Week.current
     @current_week_path = "/picks/#{@current_week.week}"
     @teams = Team.by_id
+    @users = User.order(:name).all
+    @weeks = Week.for(shared[:season]).all
 
     r.multi_route
 
     r.root do
-      @weeks = Week.for(shared[:season]).all
       view 'summary'
     end
   end

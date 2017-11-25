@@ -1,0 +1,67 @@
+%section.content-header
+  %h1 Debt
+
+%section.content
+  = csrf_tag
+  .row
+    .col-md-10.col-md-offset-1
+      .box
+        .box-header.with-border
+          %h2.box-title Debt Owed To You
+        .box-body.table-responsive.no-padding
+          %table.table.table-hover.table-striped.text-center
+            %thead
+              %tr
+                %th Week
+                - @users.each do |user|
+                  - next if user == @current_user
+                  %th= user.name
+            %tbody
+              - @weeks.each do |week|
+                - next unless week.winner? && week.winner == @current_user
+                %tr
+                  %td
+                    = week.week
+                  - week.debts_dataset.by_loser.all.each do |debt|
+                    - next if debt.loser_id == week.winner.id
+                    - klass = debt.paid ? 'btn-success' : 'btn-danger'
+                    %td
+                      %a.btn.btn-block.btn-sm.debt-owed{class: klass, id: debt.id}
+                        = '$%d' % debt.amount
+
+%section.content
+  .row
+    .col-md-10.col-md-offset-1
+      .box
+        .box-header.with-border
+          %h2.box-title All Debts
+        .box-body.table-responsive.no-padding
+          %table.table.table-hover.table-striped.text-center
+            %thead
+              %tr
+                %th{rowspan: 2} Week
+                %th{rowspan: 2} Winner
+                %th.text-center{colspan: @users.count} Losers
+              %tr
+                - @users.each do |user|
+                  %th= user.name
+            %tbody
+              - @weeks.each do |week|
+                %tr
+                  %td
+                    = week.week
+                  - if week.winner?
+                    %td= week.winner.name
+                    - week.debts_dataset.by_loser.all.each do |debt|
+                      - if debt.loser_id == week.winner.id
+                        %td.text-center
+                          %i.fa.fa-times-circle
+                      - else
+                        - klass = debt.paid ? 'success' : 'danger'
+                        %td{class: klass}
+                          = '$%d' % debt.amount
+                  - else
+                    %td
+                      - if week.games_finished?
+                        %i Tie
+                    %td{colspan: @users.count}
