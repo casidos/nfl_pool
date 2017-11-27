@@ -43,6 +43,14 @@ class User < Sequel::Model
   one_to_many :correct_picks, class: :Pick, conditions: { won: true}
   one_to_many :picks
 
+  def correct_picks_week_dataset(week)
+    correct_picks_dataset
+      .eager_graph(:week)
+      .where(week__id: week.id)
+      .spread
+      .qualify
+  end
+
   def pretty_correct_picks(week: nil, type: nil)
     week ? _pretty_correct_picks_week(week, type) : _pretty_correct_picks_all(type)
   end
@@ -80,11 +88,6 @@ class User < Sequel::Model
   end
 
   def _pretty_correct_picks_week(week, type)
-    correct_picks_dataset
-      .eager_graph(:week)
-      .where(week__id: week.id)
-      .spread
-      .qualify
-      .count
+    correct_picks_week_dataset(week).count
   end
 end

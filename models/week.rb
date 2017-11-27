@@ -81,6 +81,11 @@ class Week < Sequel::Model
     Week[id + 1]
   end
 
+  def perfect_week?
+    return false unless winner?
+    winner.correct_picks_week_dataset(self).count == games_dataset.followed.count
+  end
+
   def picks_for(user)
     picks_dataset.where(user: user).all.each_with_object({}) do |pick, h|
       h[pick.odd_id] = pick.team
@@ -96,6 +101,7 @@ class Week < Sequel::Model
         add_winner User[user_id]
       end
 
+      update(pot: pot + Users.count) if perfect_week?
       debt!
 
       # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
@@ -122,6 +128,7 @@ class Week < Sequel::Model
   def debt!
     return unless winner?
     payee_id = winner.id
+    amount = perfect_week?
 
     User.map(:id).each do |loser_id|
       Debt.create(
