@@ -101,7 +101,7 @@ class Week < Sequel::Model
         add_winner User[user_id]
       end
 
-      update(pot: pot + Users.count) if perfect_week?
+      update(pot: pot + User.count) if perfect_week?
       debt!
 
       # TODO: Find single winner if winners_dataset.count > 1 and betting_tier == 4
