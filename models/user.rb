@@ -41,6 +41,8 @@ class User < Sequel::Model
   many_to_one :team
 
   one_to_many :correct_picks, class: :Pick, conditions: { won: true}
+  one_to_many :debts_owed, class: :Debt, conditions: { paid: false }, key: :loser_id
+  one_to_many :debts_pending, class: :Debt, conditions: { paid: false }, key: :payee_id
   one_to_many :picks
 
   def correct_picks_week_dataset(week)

@@ -1,13 +1,15 @@
 %section.content-header
-  %h1 Debt
+  %h1 Debt Owed
 
-%section.content
+%br/
+
+%section
   = csrf_tag
   .row
     .col-md-10.col-md-offset-1
       .box
         .box-header.with-border
-          %h2.box-title Debt Owed To You
+          %h2.box-title Debts Pending
         .box-body.table-responsive.no-padding
           %table.table.table-hover.table-striped.text-center
             %thead
@@ -29,7 +31,29 @@
                       %a.btn.btn-block.btn-sm.debt-owed{class: klass, id: debt.id}
                         = '$%d' % debt.amount
 
-%section.content
+%section
+  .row
+    .col-md-10.col-md-offset-1
+      .box
+        .box-header.with-border
+          %h2.box-title Debt Owed To Others
+        .box-body.table-responsive.no-padding
+          %table.table.table-hover.table-striped.text-center
+            %thead
+              %tr
+                - @users.each do |user|
+                  - next if user == @current_user
+                  %th= user.name
+            %tbody
+              %tr
+                - @users.each do |user|
+                  - next if user == @current_user
+                  - amount = @debts_owed[user.id] || 0
+                  - klass = 'danger' if amount > 0
+                  %td{class: klass}
+                    = '$%d' % amount
+
+%section
   .row
     .col-md-10.col-md-offset-1
       .box

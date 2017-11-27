@@ -17,6 +17,12 @@ class NFLPool
         end
       end
 
+      @debts_owed =
+        @current_user.debts_owed_dataset.each_with_object({}) do |d, debts|
+          debts[d[:payee_id]] ||= 0
+          debts[d[:payee_id]] += d.amount.to_i
+        end
+
       view 'debt'
     end
   end
