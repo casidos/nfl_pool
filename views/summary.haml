@@ -57,6 +57,7 @@
                   %td
                     - if week.pot
                       = '$%d' % week.pot
+                      = '*' if week.perfect_week?
                   %td
                     - if week.games_finished?
                       - if week.winner?
@@ -67,3 +68,6 @@
                         %br/
                         %i
                           = week.winners.map(&:name).sort.join(', ')
+            %tfoot
+              %tr
+                %th{colspan: 5} * denotes perfect week
