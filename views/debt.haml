@@ -58,6 +58,34 @@
     .col-md-10.col-md-offset-1
       .box
         .box-header.with-border
+          %h2.box-title Difference Owed
+        .box-body.table-responsive.no-padding
+          %table.table.table-hover.table-striped.text-center
+            %thead
+              %tr
+                - @users.each do |user|
+                  - next if user == @current_user
+                  %th= user.name
+            %tbody
+              %tr
+                - @users.each do |user|
+                  :ruby
+                    next if user == @current_user
+                    amount = (@debts_pending[user.id] || 0) - (@debts_owed[user.id] || 0)
+                    klass =
+                      if amount > 0
+                        'success'
+                      elsif amount < 0
+                        'danger'
+                      end
+                  %td{class: klass}
+                    = '$%d' % amount.abs
+
+%section
+  .row
+    .col-md-10.col-md-offset-1
+      .box
+        .box-header.with-border
           %h2.box-title All Debts
         .box-body.table-responsive.no-padding
           %table.table.table-hover.table-striped.text-center
