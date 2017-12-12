@@ -53,9 +53,22 @@ class Game < Sequel::Model
       ScoreScraper.new(week: week).games.each do |game|
         raise 'Game not found' unless (g = Game.first(remote_id: game.id))
         next if game.status == 'pending'
+        final = game.status == 'final'
+        game_winner_id =
+          if final
+            if game.away_team_score > game.home_team_score
+              g.away_team_id
+            elsif game.home_team_score > game.away_team_score
+              g.home_team_id
+            else
+              0
+            end
+          end
+
         g.update(
           away_team_score: game.away_score,
-          final: game.status == 'final',
+          game_winner_id: game_winner_id,
+          final: final,
           home_team_score: game.home_score,
           quarter_time: game.time_left,
           status: game.status
@@ -81,6 +94,7 @@ class Game < Sequel::Model
 
   many_to_one :away_team, class: :Team
   many_to_one :home_team, class: :Team
+  many_to_one :game_winner, class: :Team
   many_to_one :week
 
   one_to_many :odds
@@ -89,16 +103,20 @@ class Game < Sequel::Model
   one_to_one :total_odd
 
   dataset_module do
+    def began
+      where{starts_at < Time.now}
+    end
+
+    def finished
+      where(final: true)
+    end
+
     def followed
       where(followed: true)
     end
 
     def pending
       where(status: 'pending')
-    end
-
-    def began
-      where{starts_at < Time.now}
     end
 
     def unfinished

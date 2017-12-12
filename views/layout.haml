@@ -66,6 +66,10 @@
                 %a{href: '/debt'}
                   %i.fa.fa-dollar
                   %span Debt Owed
+              %li{class: ('active' if request.path.include? 'stats')}
+                %a{href: '/stats'}
+                  %i.fa.fa-bar-chart
+                  %span Stats
               %li{class: ('active' if request.path.include? 'rules')}
                 %a{href: '/rules'}
                   %i.fa.fa-book

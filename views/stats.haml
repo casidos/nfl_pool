@@ -1,0 +1,96 @@
+%section.content-header
+  %h1.pull-left
+    Stats
+
+%section.content.content-picks
+  .row
+    .col-md-12
+      .box
+        .box-header.with-border
+          %h2.box-title By Team
+        .box-body.no-padding
+          %table.table.table-hover.table-striped.stats
+            %thead
+              %tr
+                %th{rowspan: 2} Team
+                %th.section{rowspan: 2} Games
+                %th.section{colspan: 3, style: 'border-right: 1px solid black !important'} Won
+                %th.section{colspan: 3} Favored
+                %th.section{colspan: 3} Covered (When Favored)
+                %th{colspan: 3} Covered (Total)
+              %tr
+                %th.text-center Away
+                %th Home
+                %th.section Total
+                %th Away
+                %th Home
+                %th.section Total
+                %th Away
+                %th Home
+                %th.section Total
+                %th Away
+                %th Home
+                %th Total
+            %tbody
+              - @user_teams.each do |team|
+                %tr
+                  %td
+                    %img{class: 'logo', src: team.logo_url, title: team.name}
+                    = team.name
+                  %td.total= @stats[team.id][:total_games]
+
+                  / Won
+                  %td
+                    = @stats[team.id][:away_games_won]
+                    %br/
+                    (#{(@stats[team.id][:away_games_won].to_f / @stats[team.id][:total_games] * 100).round}%)
+                  %td
+                    = @stats[team.id][:home_games_won]
+                    %br/
+                    (#{(@stats[team.id][:home_games_won].to_f / @stats[team.id][:total_games] * 100).round}%)
+                  %td.total
+                    = @stats[team.id][:total_games_won]
+                    %br/
+                    (#{(@stats[team.id][:total_games_won].to_f / @stats[team.id][:total_games] * 100).round}%)
+
+                  / Favored
+                  %td
+                    = @stats[team.id][:away_games_favored]
+                    %br/
+                    (#{(@stats[team.id][:away_games_favored].to_f / @stats[team.id][:total_games] * 100).round}%)
+                  %td
+                    = @stats[team.id][:home_games_favored]
+                    %br/
+                    (#{(@stats[team.id][:home_games_favored].to_f / @stats[team.id][:total_games] * 100).round}%)
+                  %td.total
+                    = @stats[team.id][:total_games_favored]
+                    %br/
+                    (#{(@stats[team.id][:total_games_favored].to_f / @stats[team.id][:total_games] * 100).round}%)
+
+                  / Covered (When Favored)
+                  %td
+                    = @stats[team.id][:away_games_covered_when_favored]
+                    %br/
+                    (#{(@stats[team.id][:away_games_covered_when_favored].to_f / @stats[team.id][:total_games_favored] * 100).round}%)
+                  %td
+                    = @stats[team.id][:home_games_covered_when_favored]
+                    %br/
+                    (#{(@stats[team.id][:home_games_covered_when_favored].to_f / @stats[team.id][:total_games_favored] * 100).round}%)
+                  %td.total
+                    = @stats[team.id][:total_games_covered_when_favored]
+                    %br/
+                    (#{(@stats[team.id][:total_games_covered_when_favored].to_f / @stats[team.id][:total_games_favored] * 100).round}%)
+
+                  / Covered (Total)
+                  %td
+                    = @stats[team.id][:away_games_covered]
+                    %br/
+                    (#{(@stats[team.id][:away_games_covered].to_f / @stats[team.id][:total_games] * 100).round}%)
+                  %td
+                    = @stats[team.id][:home_games_covered]
+                    %br/
+                    (#{(@stats[team.id][:home_games_covered].to_f / @stats[team.id][:total_games] * 100).round}%)
+                  %td
+                    = @stats[team.id][:total_games_covered]
+                    %br/
+                    (#{(@stats[team.id][:total_games_covered].to_f / @stats[team.id][:total_games] * 100).round}%)
